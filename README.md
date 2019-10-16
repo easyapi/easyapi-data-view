@@ -9,6 +9,7 @@ easyapi-json-view
 EasyAPI JSON注释显示组件，主要作用就是美化显示JSON数据，在此基础上，多一个类型和注释（类型一般JSON显示组件也有）。
 
 ## 组建效果图
+![image](https://qiniu.easyapi.com/easyapi-json-view.png)
 
 > 颜色说明：注释 背景底色 字体颜色，类型
 
