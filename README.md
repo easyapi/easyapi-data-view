@@ -26,6 +26,7 @@ EasyAPI JSON注释显示组件，主要作用就是美化显示JSON数据，在�
 ## 方法说明
 
 *1、showType 显示数据类型（字段类型）*
+
 *1、showDescription 显示数据注释（字段描述）*
 
 ## 更多
