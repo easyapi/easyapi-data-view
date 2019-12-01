@@ -1,0 +1,57 @@
+{
+  "name": "easyapi-json-view",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "keywords": [
+    "vue",
+    "json"
+  ],
+  "main": "./src/index.js",
+  "module": "./dist/vue-json-edit.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jinkin1995/vue-json-edit.git"
+  },
+  "homepage": "https://github.com/jinkin1995/vue-json-edit",
+  "bugs": {
+    "url": "https://github.com/jinkin1995/vue-json-edit/issues"
+  },
+  "license": "Apache 2",
+  "scripts": {
+    "dev": "webpack-dev-server --open --config webpack.config.js",
+    "example": "rm -rf ./example/dist/*.js && rm -rf ./example/dist/*.html && webpack --progress --config webpack.config.js",
+    "build": "webpack --progress --config webpack.build.js"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-component": "^1.1.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^2.1.0",
+    "html-webpack-plugin": "^3.2.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "resolve-url-loader": "^3.0.1",
+    "style-loader": "^0.23.1",
+    "url-loader": "^1.1.2",
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.8",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  },
+  "dependencies": {
+    "element-ui": "^2.13.0",
+    "highlight.js": "^9.15.6",
+    "jquery": "^3.4.1",
+    "vue": "^2.6.8"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

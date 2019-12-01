@@ -1,35 +1,80 @@
-# EasyAPI JSON注释显示组件
+# Vue-Json-Edit
 
-## 组建命名
+> Visual JSON Editor built as an vue component. Provides a basic GUI
 
-easyapi-json-view
 
-## 组建描述
+</br>
 
-EasyAPI JSON注释显示组件，主要作用就是美化显示JSON数据，在此基础上，多一个类型和注释（类型一般JSON显示组件也有）。
 
-## 组建效果图
-![image](https://qiniu.easyapi.com/easyapi-json-view.png)
+## **[DEMO](http://jinkin1995.github.io/vue-json-edit)**
 
-> 颜色说明：注释 背景底色 字体颜色，类型
+</br>
 
-## 2个数据格式
 
-传入数据包括2个JSON数据对象
+## Getting Started
+```
+npm install vue-json-edit --save
+```
 
-*1、标准JSON数据*
-> 用来显示JSON的基础数据，使用pre标签，风格采用
+</br>
 
-*2、JSON注释数据*
-> 默认勾选数据类型、数据注释，如图所示显示数据类型与数据注释，
 
-## 方法说明
+## Usage
 
-*1、showType 显示数据类型（字段类型）*
+``` javascript
+//import it in your project At your entry point
 
-*2、showDescription 显示数据注释（字段描述）*
+import vue from 'vue'
+import JsonEditor from 'vue-json-edit'
+  
+Vue.use(JsonEditor)
+```
+### Props
 
-## 更多
+* objData: json data
+* options
+    * confirmText: strings of the confirm button
+    * cancelText: strings of the cancel button
 
-*数据类型（字段类型）*
-> string, number, boolean, integer, float, double, object, array
+
+</br>
+
+## Example
+Single file component
+``` html
+
+<template>
+    <JsonEditor
+        :options="{
+            confirmText: 'confirm',
+            cancelText: 'cancel',
+        }"
+        :objData="jsonData" 
+        v-model="jsonData" >
+    </JsonEditor>
+</template>
+<script>
+export default {
+    ...
+    data: function() {
+        return {
+            jsonData: {
+                name: 'mike',
+                age: 23,
+                phone: '18552129932',
+                address: ['AAA C1', 'BBB C2']
+            }
+        }
+    }
+}
+</script> 
+```
+
+</br>
+
+## Changelog
+
+v1.3.0
+* Options prop for sets the strings of the button
+
+
