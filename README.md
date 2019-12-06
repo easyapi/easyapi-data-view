@@ -1,80 +1,107 @@
-# Vue-Json-Edit
+# EasyAPI JSON 注释显示组件
 
-> Visual JSON Editor built as an vue component. Provides a basic GUI
+## 组建命名
 
+easyapi-json-view
 
-</br>
+## 组建描述
 
+EasyAPI JSON 注释显示组件，主要作用就是美化显示 JSON 数据，在此基础上，多一个类型和注释（类型一般 JSON 显示组件也有）。
 
-## **[DEMO](http://jinkin1995.github.io/vue-json-edit)**
+## 组建效果图
 
-</br>
+![image](https://qiniu.easyapi.com/easyapi-json-view.png)
 
+> 颜色说明：注释 背景底色 字体颜色，类型
 
-## Getting Started
-```
-npm install vue-json-edit --save
-```
+## 2 个数据格式
 
-</br>
+传入数据包括 2 个 JSON 数据对象
 
+_1、标准 JSON 数据_
 
-## Usage
+> 用来显示 JSON 的基础数据，使用 pre 标签，风格采用
+> _2、JSON 注释数据_
+> 默认勾选数据类型、数据注释，如图所示显示数据类型与数据注释，
 
-``` javascript
-//import it in your project At your entry point
+## 方法说明
 
-import vue from 'vue'
-import JsonEditor from 'vue-json-edit'
-  
-Vue.use(JsonEditor)
-```
-### Props
+_1、showType 显示数据类型（字段类型）_
 
-* objData: json data
-* options
-    * confirmText: strings of the confirm button
-    * cancelText: strings of the cancel button
+_2、showDescription 显示数据注释（字段描述）_
 
+## 更多
 
-</br>
+_数据类型（字段类型）_
+
+> string, number, boolean, integer, float, double, object, array
+
+## Props
+
+| Props       |              |
+| ----------- | ------------ |
+| jsonData    | json data    |
+| commentData | comment data |
+
+---
+
+| commentData  |             |
+| ------------ | ----------- |
+| name         | key name    |
+| remark       | 注释        |
+| childParams? | childParams |
 
 ## Example
-Single file component
-``` html
 
-<template>
-    <JsonEditor
-        :options="{
-            confirmText: 'confirm',
-            cancelText: 'cancel',
-        }"
-        :objData="jsonData" 
-        v-model="jsonData" >
-    </JsonEditor>
-</template>
-<script>
-export default {
-    ...
-    data: function() {
-        return {
-            jsonData: {
-                name: 'mike',
-                age: 23,
-                phone: '18552129932',
-                address: ['AAA C1', 'BBB C2']
-            }
-        }
-    }
-}
-</script> 
 ```
+<el-json-view
+    :jsonData="jsonData"
+    :commentData="commentData"
+></el-json-view>
 
-</br>
+<script>
 
-## Changelog
+export default {
+  name: "app",
+  data: function() {
+    return {
+      commentData: [
+        {
+          name: "dddd",
+          remark: "232"
+        },
+        {
+          name: "fff",
+          remark: null,
+          childParams: [
+            {
+              name: "fasd",
+              remark: "22"
+            },
+            {
+              name: "vvv",
+              remark: "fff"
+            }
+          ]
+        },
+        {
+          name: "vvv",
+          remark: "123"
+        }
+      ],
+      jsonData: {
+        dddd: 1234,
+        fff: {
+          fasd: "213",
+          vvv: "12312"
+        },
+        vvv: "ass"
+      }
+    };
+  },
+  mounted: function() {}
+};
+</script>
 
-v1.3.0
-* Options prop for sets the strings of the button
 
-
+```

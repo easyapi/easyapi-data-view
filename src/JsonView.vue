@@ -1,12 +1,10 @@
 <template>
   <div class="el-json-view">
-    <span>
+    <div class="ctrs">
       <el-checkbox v-model="dataNoteShow">数据注释</el-checkbox>
       <el-checkbox v-model="dataTypeShow">数据类型</el-checkbox>
-    </span>
-    <pre>
-        <code class="json" id="res_code"></code>
-      </pre>
+    </div>
+    <pre class="viewport" id="res_code"></pre>
   </div>
 </template>
 
@@ -43,27 +41,15 @@ export default {
   },
   created() {
     this.resCode();
+    this.makeParamsNote();
+    this.makeDataType();
   },
   watch: {
     dataNoteShow: function() {
-      if (this.dataNoteShow) {
-        this.showParamsNote();
-      }
+      this.showParamsNote();
     },
     dataTypeShow: function() {
       this.showDataType();
-    },
-    dataTypeArr: function() {
-      let vals = $("#res_code").children("span:not(.hljs-attr)");
-      vals.each((index, el) => {
-        $(el).append(
-          $(
-            `<span class="label type">${
-              this.dataTypes[this.dataTypeArr[index]]
-            }</span>`
-          )
-        );
-      });
     }
   },
   methods: {
@@ -89,62 +75,31 @@ export default {
       // this.addCodeLine();
       this.dataNoteShow = true;
       this.dataTypeShow = true;
-      this.showDataType();
-      this.showParamsNote();
     },
 
     //生成数据注释
     makeParamsNote: function() {
-      //获取一级key
-      // let obj = JSON.parse(this.resCodeDisplay)
-      // this.firstLevelParams = []
-      // for(let i in obj) {
-      //   this.firstLevelParams.push(i)
-      // }
-
-      //描述字段
-      let attrs = $("#res_code .hljs-attr");
-      let tmpAttrs = attrs;
-      attrs = [];
-
-      for (let i = 0; i < tmpAttrs.length; ++i) {
-        if (
-          $(tmpAttrs[i])
-            .next()
-            .hasClass("hljs-attr")
-        ) {
-          continue;
-        }
-        attrs.push(tmpAttrs[i]);
-      }
-
       this.dataNoteArr = [];
-      for (let i = 0; i < attrs.length; ++i) {
-        let noCheck = true;
-        let attrTmp = $(attrs[i])
-          .text()
-          .replace('"', "")
-          .replace('"', "");
-        for (let j = 0; j < this.paramsNote.length; ++j) {
-          let el = this.paramsNote[j];
-          if (el.name == attrTmp) {
+
+      //生成数据类型
+      var makeDataNote = oj => {
+        oj.forEach(el => {
+          if (el.childParams && el.childParams.length) {
             this.dataNoteArr.push({
               name: el.name,
-              des: el.description
+              remark: el.remark
             });
-            noCheck = false;
-            break;
+            makeDataNote(el.childParams);
+          } else {
+            this.dataNoteArr.push({
+              name: el.name,
+              remark: el.remark
+            });
           }
-        }
-        if (noCheck) {
-          this.dataNoteArr.push({
-            name: "",
-            des: ""
-          });
-        }
-      }
+        });
+      };
 
-      this.showParamsNote();
+      makeDataNote(this.commentData);
     },
 
     //显示参数注释
@@ -154,18 +109,13 @@ export default {
           return;
         }
 
-        let vals = $("#res_code").children("span:not(.hljs-attr)");
-
+        let vals = $("#res_code").children("span.hljs-attr");
         vals.each((index, el) => {
-          if (this.dataNoteArr[index].des) {
-            $(el).append(
-              $(
-                `<span class="label note">${this.dataNoteArr[index].des}</span>`
-              )
-            );
-          } else {
-            $(el).append($(`<span class="label note none">无注释</span>`));
-          }
+          $(el).append(
+            $(
+              `<span class="label note">${this.dataNoteArr[index].remark}</span>`
+            )
+          );
         });
       } else {
         $("#res_code")
@@ -174,24 +124,36 @@ export default {
       }
     },
 
+    //生成数据注释
+    makeDataType: function() {
+      this.dataTypeArr = [];
+
+      var setDataType = oj => {
+        let obj = typeof oj == "string" ? JSON.parse(oj) : oj;
+        for (var key in obj) {
+          if (obj[key] !== null && typeof obj[key] == "object") {
+            setDataType(obj[key]);
+          } else {
+            this.dataTypeArr.push(Object.prototype.toString.call(obj[key]));
+          }
+        }
+      };
+      setDataType(this.resCodeDisplay);
+    },
+
     //显示数据类型
     showDataType: function() {
       if (this.dataTypeShow) {
-        this.dataTypeArr = [];
-
-        //生成数据类型
-        var makeDataType = oj => {
-          let obj = typeof oj == "string" ? JSON.parse(oj) : oj;
-          for (var key in obj) {
-            if (obj[key] !== null && typeof obj[key] == "object") {
-              makeDataType(obj[key]);
-            } else {
-              this.dataTypeArr.push(Object.prototype.toString.call(obj[key]));
-            }
-          }
-        };
-
-        makeDataType(this.resCodeDisplay);
+        let vals = $("#res_code").children("span:not(.hljs-attr)");
+        vals.each((index, el) => {
+          $(el).append(
+            $(
+              `<span class="label type">${
+                this.dataTypes[this.dataTypeArr[index]]
+              }</span>`
+            )
+          );
+        });
       } else {
         $("#res_code")
           .find(".label.type")
@@ -212,48 +174,222 @@ export default {
       $("#res_code")
         .find(".label.type")
         .remove();
+    },
+
+    jsonParse: function(jsonStr) {
+      // 解析JSON
+      let parseJson = json => {
+        let result = [];
+        let keys = Object.keys(json);
+        keys.forEach((k, index) => {
+          let val = json[k];
+          let parsedVal = val;
+          if (val === null || val === undefined) {
+            val = "";
+          }
+
+          if (this.getType(val) == "object") {
+            // console.debug('-- o --')
+            parsedVal = parseJson(val);
+            // result.push(fr)
+          } else if (this.getType(val) == "array") {
+            // console.debug('-- a --')
+            // console.debug(val)
+            parsedVal = parseArray(val);
+            // result.push(fr)
+          }
+
+          let opt = {
+            name: k,
+            type: this.getType(val),
+            description: ""
+          };
+
+          if (opt.type == "array" || opt.type == "object") {
+            opt.childParams = parsedVal;
+            opt.remark = null;
+          } else {
+            opt.childParams = null;
+            opt.remark = parsedVal;
+          }
+
+          result.push(opt);
+        });
+        return result;
+      };
+
+      //  解析ARRAY
+      let parseArray = arrayObj => {
+        let result = [];
+        for (let i = 0; i < arrayObj.length; ++i) {
+          let val = arrayObj[i];
+          let parsedVal = val;
+          if (this.getType(val) == "object") {
+            parsedVal = parseJson(val);
+          } else if (this.getType(val) == "array") {
+            parsedVal = parseArray(val);
+          }
+
+          let opt = {
+            name: null,
+            type: this.getType(val),
+            description: ""
+          };
+
+          if (opt.type == "array" || opt.type == "object") {
+            opt.childParams = parsedVal;
+            opt.remark = null;
+          } else {
+            opt.childParams = null;
+            opt.remark = parsedVal;
+          }
+
+          result.push(opt);
+        }
+        return result;
+      };
+
+      // --
+      let parseBody = json => {
+        let r = parseJson(json);
+        return r;
+      };
+
+      return parseBody(jsonStr);
+    },
+
+    getType: function(obj) {
+      switch (Object.prototype.toString.call(obj)) {
+        case "[object Array]":
+          return "array";
+          break;
+        case "[object Object]":
+          return "object";
+          break;
+        default:
+          return String(typeof obj).toLowerCase();
+          break;
+      }
+    },
+
+    makeJson: function(dataArr) {
+      // 翻译JSON
+      let revertWithObj = function(data) {
+        let r = {};
+        for (let i = 0; i < data.length; ++i) {
+          let el = data[i];
+          let key, val;
+          key = el.name;
+          if (el.type == "array") {
+            val = revertWithArray(el.childParams);
+          } else if (el.type == "object") {
+            val = revertWithObj(el.childParams);
+          } else {
+            val = el.remark;
+          }
+
+          r[key] = val;
+        }
+
+        return r;
+      };
+
+      // 翻译Array
+      let revertWithArray = function(data) {
+        let arr = [];
+        for (let i = 0; i < data.length; ++i) {
+          let el = data[i];
+          let r;
+          if (el.type == "array") {
+            r = revertWithArray(el.childParams);
+          } else if (el.type == "object") {
+            r = revertWithObj(el.childParams);
+          } else {
+            r = el.remark;
+          }
+
+          arr.push(r);
+        }
+        return arr;
+      };
+
+      let revertMain = function(data) {
+        console.debug("--> make json <--");
+        let r = revertWithObj(data);
+        return r;
+      };
+
+      return revertMain(dataArr);
     }
   }
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .el-json-view {
   width: 100%;
-}
+  border: 1px solid #e4e4e4;
 
-.button {
-  &.to-test {
-    position: absolute;
-    top: 20px;
-    right: 10px;
+  .ctrs {
+    padding: 10px 12px;
+    background: #ececec;
+  }
+  .viewport {
+    margin: 0;
+    padding: 12px;
   }
 }
+</style>
 
-#res_code {
-  .hljs {
-    background: unset !important;
-    background-color: unset !important;
-    border: none !important;
+<style lang="less">
+.el-json-view {
+  .hljs-attr {
+    display: inline-block;
+    margin-bottom: 10px;
   }
 
-  .label {
-    margin-left: 10px;
-    padding: 1px 6px;
-    font-size: 0.6em;
-    color: #fff;
+  .button {
+    &.to-test {
+      position: absolute;
+      top: 20px;
+      right: 10px;
+    }
+  }
 
-    &.type {
-      color: #a5a5a5;
-      background-color: #f0f0f0;
+  .el-checkbox__label {
+    color: #11b5ca !important;
+  }
+
+  .el-checkbox__inner {
+    border-color: #11b5ca !important;
+    background-color: #11b5ca !important;
+  }
+
+  #res_code {
+    .hljs {
+      background: unset !important;
+      background-color: unset !important;
+      border: none !important;
     }
 
-    &.note {
-      background-color: #11b5ca;
-    }
+    .label {
+      margin-left: 10px;
+      padding: 1px 6px;
+      font-size: 0.6em;
+      color: #fff;
 
-    &.none {
-      background-color: #bbbec4 !important;
+      &.type {
+        color: #a5a5a5;
+        background-color: #f0f0f0;
+      }
+
+      &.note {
+        background-color: #11b5ca;
+      }
+
+      &.none {
+        background-color: #bbbec4 !important;
+      }
     }
   }
 }

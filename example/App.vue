@@ -3,7 +3,7 @@
     <div class="editor-w clearfix">
       <div class="w-2">
         <div class="editor">
-          <json-view :jsonData="jsonData"></json-view>
+          <el-json-view :jsonData="jsonData" :commentData="commentData"></el-json-view>
         </div>
       </div>
     </div>
@@ -11,27 +11,45 @@
 </template>
 
 <script>
-import hljs from "highlight.js";
-
 export default {
   name: "app",
   data: function() {
     return {
-      jsonData: {
-        name: "may",
-        age: null,
-        address: [
-          "Panyu Shiqiao on Canton",
-          "Tianhe",
-          {
-            city: "forida meta 11"
-          }
-        ],
-        ohters: {
-          id: 1246,
-          joinTime: "2017-08-20. 10:20",
-          description: "another"
+      commentData: [
+        {
+          name: "dddd",
+          remark: "232",
+          childParams: []
+        },
+        {
+          name: "fff",
+          remark: null,
+          childParams: [
+            {
+              name: "fasd",
+              remark: "22",
+              childParams: []
+            },
+            {
+              name: "vvv",
+              remark: "fff",
+              childParams: []
+            }
+          ]
+        },
+        {
+          name: "vvv",
+          remark: "123",
+          childParams: []
         }
+      ],
+      jsonData: {
+        dddd: 1234,
+        fff: {
+          fasd: "213",
+          vvv: "12312"
+        },
+        vvv: "ass"
       }
     };
   },
