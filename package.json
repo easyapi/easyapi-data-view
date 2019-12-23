@@ -8,14 +8,14 @@
     "json"
   ],
   "main": "./src/index.js",
-  "module": "./dist/vue-json-edit.js",
+  "module": "./dist/ea-json-view.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jinkin1995/vue-json-edit.git"
+    "url": "git+https://github.com/easyapi/easyapi-json-view.git"
   },
-  "homepage": "https://github.com/jinkin1995/vue-json-edit",
+  "homepage": "https://github.com/easyapi/easyapi-json-view",
   "bugs": {
-    "url": "https://github.com/jinkin1995/vue-json-edit/issues"
+    "url": "https://github.com/easyapi/easyapi-json-view/issues"
   },
   "license": "Apache 2",
   "scripts": {
