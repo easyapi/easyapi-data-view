@@ -8,7 +8,7 @@
     "json"
   ],
   "main": "./src/index.js",
-  "module": "./dist/ea-json-view.js",
+  "module": "./dist/easyapi-json-view.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/easyapi/easyapi-json-view.git"
