@@ -10,7 +10,7 @@ Vue.use(Checkbox)
 const install = (Vue) => {
   if (install.installed) return
 
-  Vue.component('ea-json-view', JsonView)
+  Vue.component('easyapi-json-view', JsonView)
 }
 
 export default install
