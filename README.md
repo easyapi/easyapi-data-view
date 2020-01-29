@@ -105,3 +105,20 @@ export default {
 
 
 ```
+
+## 目录结构
+
+```
+├── dist                      打包后产物
+├── example                   运行用例
+├── src                       源码
+│   ├── utils                 工具包
+│   ├── JsonView.vue          组件源码
+│   ├── assets                资源
+│   │   ├── font              字体
+│   │   └── styles            样式
+│   └── index.js
+├── webpack.base.js           webpack配置基础
+├── webpack.build.js          webpack配置prod
+└── webpack.config.js         webpack配置dev
+```

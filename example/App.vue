@@ -3,7 +3,7 @@
     <div class="editor-w clearfix">
       <div class="w-2">
         <div class="editor">
-          <el-json-view :jsonData="jsonData" :commentData="commentData"></el-json-view>
+          <ea-json-view :jsonData="jsonData" :commentData="commentData"></ea-json-view>
         </div>
       </div>
     </div>
