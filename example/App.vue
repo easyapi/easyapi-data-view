@@ -3,7 +3,7 @@
     <div class="editor-w clearfix">
       <div class="w-2">
         <div class="editor">
-          <ea-json-view :jsonData="jsonData" :commentData="commentData"></ea-json-view>
+          <easyapi-json-view :jsonData="jsonData" :commentData="commentData"></easyapi-json-view>
         </div>
       </div>
     </div>
