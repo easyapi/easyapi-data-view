@@ -7,7 +7,7 @@ config.mode = 'production';
 config.entry = './src/index.js';
 
 config.optimization = {
-    minimize: true,
+  minimize: true,
 }
 
 config.output = {

@@ -15,13 +15,13 @@ config.output = {
 
 config.devtool = 'inline-source-map';
 config.devServer = {
-	contentBase: './dist'
+  contentBase: './dist'
 };
 
 config.plugins = config.plugins.concat([
-	new HtmlWebpackPlugin({
-		template: './example/index.html'
-	})
+  new HtmlWebpackPlugin({
+    template: './example/index.html'
+  })
 ])
 
 module.exports = config
