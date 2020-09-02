@@ -26,7 +26,7 @@
   "dependencies": {
     "element-ui": "^2.13.2",
     "highlight.js": "^10.1.2",
-    "jquery": "^3.5.1",
+    "jquery": "^3.5.0",
     "vue": "^2.6.12"
   },
   "devDependencies": {
