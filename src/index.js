@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import JsonView from './JsonView.vue'
 import PackageFile from '../package.json'
-import { Checkbox } from "element-ui"
+import {Checkbox} from "element-ui"
 
 const VERSION = PackageFile.version
 
