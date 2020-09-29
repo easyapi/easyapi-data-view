@@ -1,8 +1,8 @@
 {
   "name": "easyapi-json-view",
   "version": "1.0.0",
-  "description": "",
-  "author": "",
+  "description": "EasyAPI JSON 注释显示组件",
+  "author": "easyapi",
   "keywords": [
     "vue",
     "json"
