@@ -1,10 +1,10 @@
 <template>
-  <div class="el-json-view">
-    <div class="ctrs">
+  <div class="ea-json-view">
+    <div class="ea-json-view_control">
       <el-checkbox v-model="dataNoteShow">数据注释</el-checkbox>
       <el-checkbox v-model="dataTypeShow">数据类型</el-checkbox>
     </div>
-    <pre class="viewport" id="res_code"></pre>
+    <pre class="ea-json-view_viewport" id="res_code"></pre>
   </div>
 </template>
 
@@ -317,15 +317,15 @@
 </script>
 
 <style lang="less" scoped>
-  .el-json-view {
+  .ea-json-view {
     width: 100%;
     border: 1px solid #e4e4e4;
 
-    .ctrs {
+    .ea-json-view_control {
       padding: 10px 12px;
       background: #ececec;
     }
-    .viewport {
+    .ea-json-view_viewport {
       margin: 0;
       padding: 12px;
     }
@@ -333,7 +333,7 @@
 </style>
 
 <style lang="less">
-  .el-json-view {
+  .ea-json-view {
     .hljs-attr {
       display: inline-block;
       margin-bottom: 10px;

@@ -11,59 +11,60 @@
 </template>
 
 <script>
-export default {
-  name: "app",
-  data: function() {
-    return {
-      commentData: [
-        {
-          name: "dddd",
-          remark: "232",
-          childParams: []
-        },
-        {
-          name: "fff",
-          remark: null,
-          childParams: [
-            {
-              name: "fasd",
-              remark: "22",
-              childParams: []
-            },
-            {
-              name: "vvv",
-              remark: "fff",
-              childParams: []
-            }
-          ]
-        },
-        {
-          name: "vvv",
-          remark: "123",
-          childParams: []
+  export default {
+    name: "app",
+    data: function () {
+      return {
+        commentData: [
+          {
+            name: "dddd",
+            remark: "232",
+            childParams: []
+          },
+          {
+            name: "fff",
+            remark: null,
+            childParams: [
+              {
+                name: "fasd",
+                remark: "22",
+                childParams: []
+              },
+              {
+                name: "vvv",
+                remark: "fff",
+                childParams: []
+              }
+            ]
+          },
+          {
+            name: "vvv",
+            remark: "123",
+            childParams: []
+          }
+        ],
+        jsonData: {
+          dddd: 1234,
+          fff: {
+            fasd: "213",
+            vvv: "12312"
+          },
+          vvv: "ass"
         }
-      ],
-      jsonData: {
-        dddd: 1234,
-        fff: {
-          fasd: "213",
-          vvv: "12312"
-        },
-        vvv: "ass"
-      }
-    };
-  },
-  methods: {},
-  mounted: function() {}
-};
+      };
+    },
+    methods: {},
+    mounted: function () {
+    }
+  };
 </script>
 
 <style>
-@import url("../node_modules/highlight.js/styles/github.css");
+  @import url("../node_modules/highlight.js/styles/github.css");
 
-.editor {
-  width: 600px;
-}
+  .editor {
+    width: 600px;
+  }
 </style>
 
 

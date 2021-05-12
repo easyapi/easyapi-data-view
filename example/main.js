@@ -2,7 +2,7 @@ import Vue from 'vue'
 import JsonView from '../src/index.js'
 import App from './App.vue'
 
-Vue.use(JsonView)
+Vue.use(JsonView);
 
 
 /* eslint-disable no-new */

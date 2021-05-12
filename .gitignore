@@ -3,6 +3,8 @@
 # Editor directories and files
 .idea
 node_modules
+
+# Lock files
 package-lock.json
 
 example/dist
