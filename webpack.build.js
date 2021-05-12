@@ -8,7 +8,7 @@ config.entry = './src/index.js';
 
 config.optimization = {
   minimize: true,
-}
+};
 
 config.output = {
   path: path.resolve(__dirname, './dist'),
@@ -20,4 +20,4 @@ config.externals = {
   vue: 'Vue',
 };
 
-module.exports = config
+module.exports = config;

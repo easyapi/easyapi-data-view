@@ -1,14 +1,14 @@
 # EasyAPI JSON 注释显示组件
 
-## 组建命名
+## 组件命名
 
 easyapi-json-view
 
-## 组建描述
+## 组件描述
 
 EasyAPI JSON 注释显示组件，主要作用就是美化显示 JSON 数据，在此基础上，多一个类型和注释（类型一般 JSON 显示组件也有）。
 
-## 组建效果图
+## 组件效果图
 
 ![image](https://qiniu.easyapi.com/easyapi-json-view.png)
 
@@ -38,14 +38,14 @@ _数据类型（字段类型）_
 
 ## Props
 
-| Props       |              |
+| Props       |  中文         |
 | ----------- | ------------ |
 | jsonData    | json data    |
 | commentData | comment data |
 
 ---
 
-| commentData  |             |
+| commentData  |  中文        |
 | ------------ | ----------- |
 | name         | key name    |
 | remark       | 注释        |
@@ -54,10 +54,7 @@ _数据类型（字段类型）_
 ## Example
 
 ```
-<el-json-view
-    :jsonData="jsonData"
-    :commentData="commentData"
-></el-json-view>
+<easyapi-json-view :jsonData="jsonData" :commentData="commentData"></easyapi-json-view>
 
 <script>
 

@@ -22,6 +22,6 @@ config.plugins = config.plugins.concat([
   new HtmlWebpackPlugin({
     template: './example/index.html'
   })
-])
+]);
 
-module.exports = config
+module.exports = config;

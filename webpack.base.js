@@ -57,13 +57,13 @@ config.module = {
       }
     }
   ]
-}
+};
 
 config.plugins = [
   new VueLoaderPlugin(),
   new webpack.ProvidePlugin({
     $: "jquery"
   })
-]
+];
 
 module.exports = config;
