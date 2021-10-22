@@ -15,7 +15,8 @@ config.output = {
 
 config.devtool = 'inline-source-map';
 config.devServer = {
-  contentBase: './dist'
+  static: false
+  // contentBase: './dist'
 };
 
 config.plugins = config.plugins.concat([

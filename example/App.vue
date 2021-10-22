@@ -11,60 +11,57 @@
 </template>
 
 <script>
-  export default {
-    name: "app",
-    data: function () {
-      return {
-        commentData: [
-          {
-            name: "dddd",
-            remark: "232",
-            childParams: []
-          },
-          {
-            name: "fff",
-            remark: null,
-            childParams: [
-              {
-                name: "fasd",
-                remark: "22",
-                childParams: []
-              },
-              {
-                name: "vvv",
-                remark: "fff",
-                childParams: []
-              }
-            ]
-          },
-          {
-            name: "vvv",
-            remark: "123",
-            childParams: []
-          }
-        ],
-        jsonData: {
-          dddd: 1234,
-          fff: {
-            fasd: "213",
-            vvv: "12312"
-          },
-          vvv: "ass"
+export default {
+  name: "app",
+  data: function () {
+    return {
+      commentData: [
+        {
+          name: "name",
+          remark: "姓名",
+          childParams: []
+        },
+        {
+          name: "info",
+          remark: null,
+          childParams: [
+            {
+              name: "age",
+              remark: "年龄",
+              childParams: []
+            },
+            {
+              name: "birthday",
+              remark: "生日",
+              childParams: []
+            }
+          ]
+        },
+        {
+          name: "description",
+          remark: "描述",
+          childParams: []
         }
-      };
-    },
-    methods: {},
-    mounted: function () {
-    }
-  };
+      ],
+      jsonData: {
+        name: "张三丰",
+        info: {
+          age: 30,
+          birthday: "1988-10-22"
+        },
+        description: "我是一个中国人"
+      }
+    };
+  },
+};
 </script>
 
 <style>
-  @import url("../node_modules/highlight.js/styles/github.css");
+@import url("../node_modules/highlight.js/styles/github.css");
 
-  .editor {
-    width: 600px;
-  }
+.editor {
+  width: 600px;
+}
 </style>
 
 

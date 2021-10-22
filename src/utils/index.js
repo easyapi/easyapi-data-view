@@ -64,8 +64,7 @@ let formatJson = function (txt, compress /*是否为压缩模式*/) {
       );
     }
   };
-  var isLast = true,
-    indent = 0;
+  var isLast = true, indent = 0;
   notify("", data, isLast, indent, false);
   return draw.join("");
 };
