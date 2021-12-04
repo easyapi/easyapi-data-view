@@ -18,29 +18,29 @@ export default {
       commentData: [
         {
           name: "name",
-          remark: "姓名",
-          childParams: []
+          description: "姓名",
+          childs: []
         },
         {
           name: "info",
-          remark: null,
-          childParams: [
+          description: null,
+          childs: [
             {
               name: "age",
-              remark: "年龄",
-              childParams: []
+              description: "年龄",
+              childs: []
             },
             {
               name: "birthday",
-              remark: "生日",
-              childParams: []
+              description: "生日",
+              childs: []
             }
           ]
         },
         {
           name: "description",
-          remark: "描述",
-          childParams: []
+          description: "描述",
+          childs: []
         }
       ],
       jsonData: {

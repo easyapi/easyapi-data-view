@@ -84,16 +84,16 @@
         //生成数据类型
         var makeDataNote = oj => {
           oj.forEach(el => {
-            if (el.childParams && el.childParams.length) {
+            if (el.childs && el.childs.length) {
               this.dataNoteArr.push({
                 name: el.name,
-                remark: el.remark
+                description: el.description
               });
-              makeDataNote(el.childParams);
+              makeDataNote(el.childs);
             } else {
               this.dataNoteArr.push({
                 name: el.name,
-                remark: el.remark
+                description: el.description
               });
             }
           });
@@ -113,7 +113,7 @@
           vals.each((index, el) => {
             $(el).append(
               $(
-                `<span class="label note">${this.dataNoteArr[index].remark}</span>`
+                `<span class="label note">${this.dataNoteArr[index].description}</span>`
               )
             );
           });
@@ -144,7 +144,8 @@
       //显示数据类型
       showDataType: function () {
         if (this.dataTypeShow) {
-          let vals = $("#res_code").children("span:not(.hljs-attr)");
+          let vals = $("#res_code").children("span:not(.hljs-attr):not(.hljs-punctuation)");
+          let vals2 = $("#res_code").children(".label.type");
           vals.each((index, el) => {
             $(el).append(
               $(
@@ -200,11 +201,11 @@
             };
 
             if (opt.type == "array" || opt.type == "object") {
-              opt.childParams = parsedVal;
-              opt.remark = null;
+              opt.childs = parsedVal;
+              opt.description = null;
             } else {
-              opt.childParams = null;
-              opt.remark = parsedVal;
+              opt.childs = null;
+              opt.description = parsedVal;
             }
 
             result.push(opt);
@@ -231,11 +232,11 @@
             };
 
             if (opt.type == "array" || opt.type == "object") {
-              opt.childParams = parsedVal;
-              opt.remark = null;
+              opt.childs = parsedVal;
+              opt.description = null;
             } else {
-              opt.childParams = null;
-              opt.remark = parsedVal;
+              opt.childs = null;
+              opt.description = parsedVal;
             }
 
             result.push(opt);
@@ -274,11 +275,11 @@
             let key, val;
             key = el.name;
             if (el.type == "array") {
-              val = revertWithArray(el.childParams);
+              val = revertWithArray(el.childs);
             } else if (el.type == "object") {
-              val = revertWithObj(el.childParams);
+              val = revertWithObj(el.childs);
             } else {
-              val = el.remark;
+              val = el.description;
             }
 
             r[key] = val;
@@ -294,11 +295,11 @@
             let el = data[i];
             let r;
             if (el.type == "array") {
-              r = revertWithArray(el.childParams);
+              r = revertWithArray(el.childs);
             } else if (el.type == "object") {
-              r = revertWithObj(el.childParams);
+              r = revertWithObj(el.childs);
             } else {
-              r = el.remark;
+              r = el.description;
             }
 
             arr.push(r);
