@@ -71,7 +71,7 @@
         var target = document.getElementById("res_code");
         target.textContent = content;
 
-        hljs.highlightBlock(target);
+        hljs.highlightElement(target);
         // this.addCodeLine();
         this.dataNoteShow = true;
         this.dataTypeShow = true;
@@ -89,7 +89,11 @@
                 name: el.name,
                 description: el.description
               });
-              makeDataNote(el.childs);
+              if(el.type === "array" && el.childs[0].type === "object"){
+                makeDataNote(el.childs[0].childs);
+              }else{
+                makeDataNote(el.childs);
+              }
             } else {
               this.dataNoteArr.push({
                 name: el.name,
@@ -145,7 +149,6 @@
       showDataType: function () {
         if (this.dataTypeShow) {
           let vals = $("#res_code").children("span:not(.hljs-attr):not(.hljs-punctuation)");
-          let vals2 = $("#res_code").children(".label.type");
           vals.each((index, el) => {
             $(el).append(
               $(

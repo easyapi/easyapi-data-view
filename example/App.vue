@@ -3,7 +3,10 @@
     <div class="editor-w clearfix">
       <div class="w-2">
         <div class="editor">
-          <easyapi-json-view :jsonData="jsonData" :commentData="commentData"></easyapi-json-view>
+          <easyapi-json-view
+            :jsonData="jsonData"
+            :commentData="commentData"
+          ></easyapi-json-view>
         </div>
       </div>
     </div>
@@ -19,38 +22,66 @@ export default {
         {
           name: "name",
           description: "姓名",
-          childs: []
+          childs: [],
+          type: "string"
         },
         {
           name: "info",
           description: null,
+          type: "array",
           childs: [
             {
-              name: "age",
-              description: "年龄",
-              childs: []
+              name: "",
+              description: "tt",
+              type: "object",
+              childs: [
+                {
+                  name: "age",
+                  description: "年龄",
+                  childs: [],
+                  type: "number"
+                },
+              ],
             },
-            {
-              name: "birthday",
-              description: "生日",
-              childs: []
-            }
-          ]
+          ],
         },
-        {
-          name: "description",
-          description: "描述",
-          childs: []
-        }
       ],
+      // commentData: [
+      //   {
+      //     name: "name",
+      //     description: "姓名",
+      //     childs: [],
+      //   },
+      //   {
+      //     name: "info",
+      //     description: null,
+      //     childs: [
+      //       {
+      //         name: "age",
+      //         description: "年龄",
+      //         childs: [
+      //         ],
+      //       },
+      //     ],
+      //   },
+      // ],
+
       jsonData: {
         name: "张三丰",
-        info: {
-          age: 30,
-          birthday: "1988-10-22"
-        },
-        description: "我是一个中国人"
-      }
+        info: [
+          {
+            age: 30,
+          },
+        ],
+      },
+      // jsonData: {
+      //   name: "张三丰",
+      //   info: 
+      //     {
+      //       age: 30,
+      //     },
+        
+      // },
     };
   },
 };

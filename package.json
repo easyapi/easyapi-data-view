@@ -1,6 +1,6 @@
 {
   "name": "easyapi-json-view",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "EasyAPI JSON 注释显示组件",
   "author": "easyapi",
   "keywords": [
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "element-ui": "^2.15.6",
-    "highlight.js": "^11.3.1",
+    "highlight.js": "^10.7.0",
     "jquery": "^3.6.0",
     "vue": "^2.6.14"
   },
