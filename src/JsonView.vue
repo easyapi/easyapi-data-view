@@ -41,7 +41,7 @@ export default {
     };
   },
   created() {
-    this.jsonData = this.makeJson(this.commentData);
+    this.jsonData = this.makeJsonEditor(this.commentData);
     this.resCode();
     this.makeParamsNote();
     this.makeDataType();
@@ -54,7 +54,7 @@ export default {
       this.showDataType();
     },
     commentData: function () {
-      this.jsonData = this.makeJson(this.commentData);
+      this.jsonData = this.makeJsonEditor(this.commentData);
       this.resCode();
       this.makeParamsNote();
       this.makeDataType();
@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     
-    makeJson: function (dataArr) {
+    makeJsonEditor: function (dataArr) {
       if (!dataArr || dataArr.length == 0) {
         return [];
       }
