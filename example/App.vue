@@ -7,9 +7,7 @@
             :jsonData="jsonData"
             :commentData="commentData"
           ></easyapi-json-view> -->
-          <easyapi-json-view
-            :commentData="commentData"
-          ></easyapi-json-view>
+          <easyapi-json-view :commentData="commentData"></easyapi-json-view>
         </div>
       </div>
     </div>
@@ -23,67 +21,21 @@ export default {
     return {
       commentData: [
         {
-          name: "name",
-          description: "姓名",
+          name: "username",
+          description: "用户名",
+          type: "string",
+          demo: "zhangsan",
           childs: [],
-          type: "string"
-        },
-        {
-          name: "info",
-          description: null,
-          type: "array",
-          childs: [
-            {
-              name: "",
-              description: "tt",
-              type: "object",
-              childs: [
-                {
-                  name: "age",
-                  description: "年龄",
-                  childs: [],
-                  type: "number"
-                },
-              ],
-            },
-          ],
         },
       ],
-      // commentData: [
-      //   {
-      //     name: "name",
-      //     description: "姓名",
-      //     childs: [],
-      //   },
-      //   {
-      //     name: "info",
-      //     description: null,
-      //     childs: [
-      //       {
-      //         name: "age",
-      //         description: "年龄",
-      //         childs: [
-      //         ],
-      //       },
-      //     ],
-      //   },
-      // ],
 
-      jsonData: {
-        name: "张三丰",
-        info: [
-          {
-            age: 30,
-          },
-        ],
-      },
       // jsonData: {
       //   name: "张三丰",
-      //   info: 
+      //   info:
       //     {
       //       age: 30,
       //     },
-        
+
       // },
     };
   },
