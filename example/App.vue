@@ -27,6 +27,13 @@ export default {
           demo: "zhangsan",
           childs: [],
         },
+        {
+          name: "pass",
+          description: "密码",
+          type: "int",
+          demo: 1,
+          childs: [],
+        },
       ],
 
       // jsonData: {
