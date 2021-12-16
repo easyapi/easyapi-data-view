@@ -22,7 +22,7 @@ export default {
       commentData: [
         {
           name: "username",
-          description: "用户名",
+          description: "",
           type: "string",
           demo: "zhangsan",
           childs: [],

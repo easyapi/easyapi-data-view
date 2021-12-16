@@ -61,7 +61,6 @@ export default {
     },
   },
   methods: {
-    
     makeJsonEditor: function (dataArr) {
       if (!dataArr || dataArr.length == 0) {
         return [];
@@ -149,6 +148,7 @@ export default {
             this.dataNoteArr.push({
               name: el.name,
               description: el.description,
+              type: el.type
             });
             if (el.type === "array" && el.childs[0].type === "object") {
               makeDataNote(el.childs[0].childs);
@@ -159,6 +159,7 @@ export default {
             this.dataNoteArr.push({
               name: el.name,
               description: el.description,
+              type: el.type
             });
           }
         });
@@ -176,11 +177,13 @@ export default {
 
         let vals = $("#res_code").children("span.hljs-attr");
         vals.each((index, el) => {
-          $(el).append(
-            $(
-              `<span class="label note">${this.dataNoteArr[index].description}</span>`
-            )
-          );
+          if (this.dataNoteArr[index].description) {
+            $(el).append(
+              $(
+                `<span class="label note">${this.dataNoteArr[index].description}</span>`
+              )
+            );
+          }
         });
       } else {
         $("#res_code").find(".label.note").remove();
@@ -214,7 +217,8 @@ export default {
           $(el).append(
             $(
               `<span class="label type">${
-                this.dataTypes[this.dataTypeArr[index]]
+                // this.dataTypes[this.dataTypeArr[index]]
+                this.dataNoteArr[index].type
               }</span>`
             )
           );
