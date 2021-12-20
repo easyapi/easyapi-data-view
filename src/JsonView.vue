@@ -133,6 +133,13 @@ export default {
 
       hljs.highlightElement(target);
       // this.addCodeLine();
+      if(this.dataNoteShow){
+        this.showParamsNote();
+      }
+      if(this.dataTypeShow){
+        this.showDataType();
+      }
+      
       this.dataNoteShow = true;
       this.dataTypeShow = true;
     },
@@ -193,18 +200,61 @@ export default {
     //生成数据注释
     makeDataType: function () {
       this.dataTypeArr = [];
-
-      var setDataType = (oj) => {
-        let obj = typeof oj == "string" ? JSON.parse(oj) : oj;
-        for (var key in obj) {
-          if (obj[key] !== null && typeof obj[key] == "object") {
-            setDataType(obj[key]);
+      var that = this;
+      if (!this.commentData || this.commentData.length == 0) {
+        return [];
+      }
+      const revertWithObj = function (data) {
+        let r = {};
+        for (let i = 0; i < data.length; ++i) {
+          let el = data[i];
+          if (el.type === "array") {
+            revertWithArray(el.childs);
+          } else if (el.type === "object") {
+            revertWithObj(el.childs);
           } else {
-            this.dataTypeArr.push(Object.prototype.toString.call(obj[key]));
+            that.dataTypeArr.push(el.type);
           }
         }
+        return;
       };
-      setDataType(this.resCodeDisplay);
+
+      const revertWithArray = function (data) {
+        for (let i = 0; i < data.length; ++i) {
+          let el = data[i];
+          if (el.type === "array") {
+            revertWithArray(el.childs);
+          } else if (el.type === "object") {
+            revertWithObj(el.childs);
+          } else {
+            that.dataTypeArr.push(el.type);
+          }
+        }
+        return;
+      };
+
+      const revertMain = function (data) {
+        if (data[0].type === "array") {
+          return revertWithArray(data[0].childs);
+        } else if (data[0].type === "object") {
+          return revertWithObj(data[0].childs);
+        }
+        return revertWithObj(data);
+      };
+      return revertMain(this.commentData);
+      
+      // var setDataType = (oj) => {
+      //   let obj = typeof oj == "string" ? JSON.parse(oj) : oj;
+      //   for (var key in obj) {
+      //     if (obj[key] !== null && typeof obj[key] == "object") {
+      //       setDataType(obj[key]);
+      //     } else {
+      //       this.dataTypeArr.push(Object.prototype.toString.call(obj[key]));
+      //     }
+      //   }
+      // };
+      // setDataType(this.resCodeDisplay);
+      
     },
 
     //显示数据类型
@@ -218,7 +268,7 @@ export default {
             $(
               `<span class="label type">${
                 // this.dataTypes[this.dataTypeArr[index]]
-                this.dataNoteArr[index].type
+                this.dataTypeArr[index]
               }</span>`
             )
           );
