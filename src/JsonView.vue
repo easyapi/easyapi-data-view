@@ -133,13 +133,13 @@ export default {
 
       hljs.highlightElement(target);
       // this.addCodeLine();
-      if(this.dataNoteShow){
+      if (this.dataNoteShow) {
         this.showParamsNote();
       }
-      if(this.dataTypeShow){
+      if (this.dataTypeShow) {
         this.showDataType();
       }
-      
+
       this.dataNoteShow = true;
       this.dataTypeShow = true;
     },
@@ -149,30 +149,37 @@ export default {
       this.dataNoteArr = [];
 
       //生成数据类型
-      var makeDataNote = (oj) => {
+      var makeDataNote = (oj,indexNum) => {
         oj.forEach((el) => {
           if (el.childs && el.childs.length) {
-            this.dataNoteArr.push({
-              name: el.name,
-              description: el.description,
-              type: el.type
-            });
-            if (el.type === "array" && el.childs[0].type === "object") {
-              makeDataNote(el.childs[0].childs);
+            //根节点不显示
+            if (!(indexNum == 0 && (el.type === "array" || el.type === "object"))) {
+              this.dataNoteArr.push({
+                name: el.name,
+                description: el.description,
+                type: el.type,
+              });
+            }
+            //如果当前是数组，但是数组下的元素不是object，则跳出
+            if(el.type === "array" && el.childs[0].type !== "object"){
+              return;
+            }
+            else if (el.type === "array" && el.childs[0].type === "object") {
+              makeDataNote(el.childs[0].childs, indexNum + 1);
             } else {
-              makeDataNote(el.childs);
+              makeDataNote(el.childs, indexNum + 1);
             }
           } else {
             this.dataNoteArr.push({
               name: el.name,
               description: el.description,
-              type: el.type
+              type: el.type,
             });
           }
         });
       };
 
-      makeDataNote(this.commentData);
+      makeDataNote(this.commentData, 0);
     },
 
     //显示参数注释
@@ -183,6 +190,7 @@ export default {
         }
 
         let vals = $("#res_code").children("span.hljs-attr");
+
         vals.each((index, el) => {
           if (this.dataNoteArr[index].description) {
             $(el).append(
@@ -242,7 +250,7 @@ export default {
         return revertWithObj(data);
       };
       return revertMain(this.commentData);
-      
+
       // var setDataType = (oj) => {
       //   let obj = typeof oj == "string" ? JSON.parse(oj) : oj;
       //   for (var key in obj) {
@@ -254,7 +262,6 @@ export default {
       //   }
       // };
       // setDataType(this.resCodeDisplay);
-      
     },
 
     //显示数据类型
@@ -302,12 +309,9 @@ export default {
           }
 
           if (this.getType(val) == "object") {
-            // console.debug('-- o --')
             parsedVal = parseJson(val);
             // result.push(fr)
           } else if (this.getType(val) == "array") {
-            // console.debug('-- a --')
-            // console.debug(val)
             parsedVal = parseArray(val);
             // result.push(fr)
           }
