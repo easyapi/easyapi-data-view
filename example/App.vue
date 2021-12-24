@@ -7,7 +7,7 @@
             :jsonData="jsonData"
             :commentData="commentData"
           ></easyapi-json-view> -->
-          <easyapi-json-view :commentData="commentData"></easyapi-json-view>
+          <easyapi-json-view :jsonData="jsonData" :commentData="commentData"></easyapi-json-view>
         </div>
       </div>
     </div>
@@ -19,31 +19,86 @@ export default {
   name: "app",
   data: function () {
     return {
+      // commentData: [
+      //   {
+      //     name: "username",
+      //     description: "",
+      //     type: "array",
+      //     demo: "zhangsan",
+      //     childs: [
+      //       {
+      //         name: "pass",
+      //         description: "密码",
+      //         type: "object",
+      //         demo: 222,
+      //         childs: [
+      //           {
+      //             name: "pass",
+      //             description: "密码",
+      //             type: "string",
+      //             demo: "123",
+      //             childs: [],
+      //           },
+      //           {
+      //             name: "name",
+      //             description: "名字",
+      //             type: "int",
+      //             demo: "zhangsan",
+      //             childs: [],
+      //           },
+      //         ],
+      //       },
+      //     ],
+      //   },
+      // ],
       commentData: [
         {
-          name: "username",
+          name: "根节点",
           description: "",
-          type: "string",
-          demo: "zhangsan",
-          childs: [],
-        },
-        {
-          name: "pass",
-          description: "密码",
-          type: "int",
-          demo: 1,
-          childs: [],
+          type: "object",
+          demo: "",
+          childs: [
+            {
+              name: "code",
+              description: "密码",
+              type: "string",
+              demo: true,
+              childs: [],
+            },
+            {
+              name: "content",
+              description: "数组",
+              type: "array",
+              demo: "",
+              childs: [
+                {
+                  name: "",
+                  description: null,
+                  type: "object",
+                  demo: "",
+                  childs: [
+                    {
+                      name: "latitude",
+                      description: "金纬度",
+                      type: "number",
+                      demo: "0",
+                      childs: [],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
         },
       ],
+      jsonData: {
+        code: "张三丰",
+        content:
+          {
+            latitude: 30,
+          },
 
-      // jsonData: {
-      //   name: "张三丰",
-      //   info:
-      //     {
-      //       age: 30,
-      //     },
-
-      // },
+      },
     };
   },
 };

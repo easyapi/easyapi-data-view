@@ -16,6 +16,7 @@ export default {
   name: "easyapi-json-view",
   props: {
     commentData: {},
+    jsonData: {}
   },
   data() {
     return {
@@ -25,7 +26,7 @@ export default {
       dataNoteArr: [],
       paramsNote: [],
 
-      jsonData: {},
+      // jsonData: {},
 
       //数据格式
       dataTypes: {
@@ -41,7 +42,7 @@ export default {
     };
   },
   created() {
-    this.jsonData = this.makeJsonEditor(this.commentData);
+    // this.jsonData = this.makeJsonEditor(this.commentData);
     this.resCode();
     this.makeParamsNote();
     this.makeDataType();
@@ -54,7 +55,7 @@ export default {
       this.showDataType();
     },
     commentData: function () {
-      this.jsonData = this.makeJsonEditor(this.commentData);
+      // this.jsonData = this.makeJsonEditor(this.commentData);
       this.resCode();
       this.makeParamsNote();
       this.makeDataType();
@@ -144,7 +145,7 @@ export default {
       this.dataTypeShow = true;
     },
 
-    //生成数据注释
+    //生成数据注释,主要将数据平铺展示
     makeParamsNote: function () {
       this.dataNoteArr = [];
 
@@ -190,12 +191,14 @@ export default {
         }
 
         let vals = $("#res_code").children("span.hljs-attr");
+        console.log("showParamsNote----->",vals);
 
         vals.each((index, el) => {
-          if (this.dataNoteArr[index].description) {
+          let indexVal = this.dataNoteArr.find(x => el.innerText === "\"" + x.name + "\"");
+          if (indexVal) {
             $(el).append(
               $(
-                `<span class="label note">${this.dataNoteArr[index].description}</span>`
+                `<span class="label note">${indexVal.description}</span>`
               )
             );
           }
@@ -275,7 +278,9 @@ export default {
             $(
               `<span class="label type">${
                 // this.dataTypes[this.dataTypeArr[index]]
-                this.dataTypeArr[index]
+                // this.dataNoteArr.find(x => el.innerText === "\"" + x.name + "\"").type
+                // this.dataTypeArr[index]
+                typeof JSON.parse(el.innerText)
               }</span>`
             )
           );
@@ -435,6 +440,21 @@ export default {
 
       return revertMain(dataArr);
     },
+    //将树状图平铺
+    // treeToTile() {
+    //   this.renderDataRows = [];
+    //   const expanded = (data) => {
+    //     if (data && data.length > 0) {
+    //       data
+    //         .filter((d) => d)
+    //         .forEach((e) => {
+    //           this.renderDataRows.push(e);
+    //           expanded(e["childs"]);
+    //         });
+    //     }
+    //   };
+    //   expanded(this.renderData);
+    // },
   },
 };
 </script>
