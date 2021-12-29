@@ -479,7 +479,7 @@ export default {
 .ea-json-view {
   .hljs-attr {
     display: inline-block;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 
   .button {
@@ -507,8 +507,8 @@ export default {
     }
 
     .label {
-      margin-left: 10px;
-      padding: 1px 6px;
+      margin-left: 5px;
+      padding: 1px 5px;
       font-size: 0.6em;
       color: #fff;
 
