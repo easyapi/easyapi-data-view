@@ -43,7 +43,7 @@ export default {
     };
   },
   created() {
-    if (this.type === 0) {
+    if (this.type === 'json') {
       this.makeParamsNote();
       this.makeDataType();
     }
@@ -57,7 +57,7 @@ export default {
       this.showDataType();
     },
     commentData: function () {
-      if (this.type === 0) {
+      if (this.type === 'json') {
         this.makeParamsNote();
         this.makeDataType();
       }
@@ -213,9 +213,9 @@ export default {
         return;
       }
       // const jsonStr = JSON.stringify(this.jsonData);
-      if(this.type === 0){
+      if(this.type === 'json'){
         this.resCodeDisplay = formatJson(this.responseData);
-      }else if(this.type === 1){
+      }else if(this.type === 'xml'){
         this.resCodeDisplay = this.formateXml(this.responseData);
       }else{
         this.resCodeDisplay = this.responseData;
@@ -367,7 +367,7 @@ export default {
 
     //显示数据类型
     showDataType: function () {
-      if (this.dataTypeShow && this.type === 0) {
+      if (this.dataTypeShow && this.type === 'json') {
         let vals = $("#res_code").children(
           "span:not(.hljs-attr):not(.hljs-punctuation)"
         );
@@ -375,7 +375,6 @@ export default {
           $(el).append(
             $(
               `<span class="label type">${
-                // this.dataTypes[this.dataTypeArr[index]]
                 typeof JSON.parse(el.innerText)
               }</span>`
             )

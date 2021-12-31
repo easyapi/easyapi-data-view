@@ -7,7 +7,7 @@
             :jsonData="jsonData"
             :commentData="commentData"
           ></easyapi-json-view> -->
-          <easyapi-json-view :responseData="jsonData" :commentData="commentData" :type="0"></easyapi-json-view>
+          <easyapi-json-view :responseData="jsonData" :commentData="commentData" :type="type"></easyapi-json-view>
         </div>
       </div>
     </div>
@@ -19,6 +19,7 @@ export default {
   name: "app",
   data: function () {
     return {
+      type: "json",
       // commentData: [
       //   {
       //     name: "username",
