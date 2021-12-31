@@ -7,7 +7,7 @@
             :jsonData="jsonData"
             :commentData="commentData"
           ></easyapi-json-view> -->
-          <easyapi-json-view :jsonData="jsonData" :commentData="commentData"></easyapi-json-view>
+          <easyapi-json-view :responseData="jsonData" :commentData="commentData" :type="0"></easyapi-json-view>
         </div>
       </div>
     </div>
@@ -60,7 +60,7 @@ export default {
           childs: [
             {
               name: "code",
-              description: "密码",
+              description: null,
               type: "string",
               demo: true,
               childs: [],
@@ -91,14 +91,8 @@ export default {
           ],
         },
       ],
-      jsonData: {
-        code: "张三丰",
-        content:
-          {
-            latitude: 30,
-          },
-
-      },
+      jsonData: "{code: \"张三丰\",content:{latitude: 30,},}",
+      // jsonData: "<person sex=\"female\"><firstname>Anna</firstname><lastname>Smith</lastname></person>",
     };
   },
 };

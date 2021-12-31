@@ -1,6 +1,6 @@
 <template>
   <div class="ea-json-view">
-    <div class="ea-json-view_control">
+    <div class="ea-json-view_control" v-if="type === 0">
       <el-checkbox v-model="dataNoteShow">数据注释</el-checkbox>
       <el-checkbox v-model="dataTypeShow">数据类型</el-checkbox>
     </div>
@@ -16,7 +16,8 @@ export default {
   name: "easyapi-json-view",
   props: {
     commentData: {},
-    jsonData: {}
+    responseData: {},
+    type: {},
   },
   data() {
     return {
@@ -42,10 +43,11 @@ export default {
     };
   },
   created() {
-    // this.jsonData = this.makeJsonEditor(this.commentData);
+    if (this.type === 0) {
+      this.makeParamsNote();
+      this.makeDataType();
+    }
     this.resCode();
-    this.makeParamsNote();
-    this.makeDataType();
   },
   watch: {
     dataNoteShow: function () {
@@ -55,13 +57,103 @@ export default {
       this.showDataType();
     },
     commentData: function () {
-      // this.jsonData = this.makeJsonEditor(this.commentData);
+      if (this.type === 0) {
+        this.makeParamsNote();
+        this.makeDataType();
+      }
       this.resCode();
-      this.makeParamsNote();
-      this.makeDataType();
     },
   },
   methods: {
+    formateXml() {
+      let text = this.responseData;
+      let that = this;
+      //使用replace去空格
+      text =
+        "\n" +
+        text
+          .replace(/(<\w+)(\s.*?>)/g, function ($0, name, props) {
+            return name + " " + props.replace(/\s+(\w+=)/g, " $1");
+          })
+          .replace(/>\s*?</g, ">\n<");
+      //处理注释
+      text = text
+        .replace(/\n/g, "\r")
+        .replace(/<!--(.+?)-->/g, function ($0, text) {
+          var ret = "<!--" + escape(text) + "-->";
+          return ret;
+        })
+        .replace(/\r/g, "\n");
+      //调整格式  以压栈方式递归调整缩进
+      var rgx =
+        /\n(<(([^\?]).+?)(?:\s|\s*?>|\s*?(\/)>)(?:.*?(?:(?:(\/)>)|(?:<(\/)\2>)))?)/gm;
+      var nodeStack = [];
+      var output = text.replace(
+        rgx,
+        function (
+          $0,
+          all,
+          name,
+          isBegin,
+          isCloseFull1,
+          isCloseFull2,
+          isFull1,
+          isFull2
+        ) {
+          var isClosed =
+            isCloseFull1 == "/" ||
+            isCloseFull2 == "/" ||
+            isFull1 == "/" ||
+            isFull2 == "/";
+          var prefix = "";
+          if (isBegin == "!") {
+            //!开头
+            prefix = that.setPrefix(nodeStack.length);
+          } else {
+            if (isBegin != "/") {
+              ///开头
+              prefix = that.setPrefix(nodeStack.length);
+              if (!isClosed) {
+                //非关闭标签
+                nodeStack.push(name);
+              }
+            } else {
+              nodeStack.pop(); //弹栈
+              prefix = that.setPrefix(nodeStack.length);
+            }
+          }
+          var ret = "\n" + prefix + all;
+          return ret;
+        }
+      );
+      var prefixSpace = -1;
+      var outputText = output.substring(1);
+      //还原注释内容
+      outputText = outputText
+        .replace(/\n/g, "\r")
+        .replace(/(\s*)<!--(.+?)-->/g, function ($0, prefix, text) {
+          if (prefix.charAt(0) == "\r") prefix = prefix.substring(1);
+          text = unescape(text).replace(/\r/g, "\n");
+          var ret =
+            "\n" + prefix + "<!--" + text.replace(/^\s*/gm, prefix) + "-->";
+          return ret;
+        });
+      outputText = outputText.replace(/\s+$/g, "").replace(/\r/g, "\r\n");
+      return outputText;
+    },
+
+    //计算头函数 用来缩进
+    setPrefix(prefixIndex) {
+      var result = "";
+      var span = "    "; //缩进长度
+      var output = [];
+      for (var i = 0; i < prefixIndex; ++i) {
+        output.push(span);
+      }
+      result = output.join("");
+      return result;
+    },
+
     makeJsonEditor: function (dataArr) {
       if (!dataArr || dataArr.length == 0) {
         return [];
@@ -117,11 +209,17 @@ export default {
     // 返回信息
     resCode: function () {
       // this.clearNote();
-      if (!this.jsonData) {
+      if (!this.responseData) {
         return;
       }
-      const jsonStr = JSON.stringify(this.jsonData);
-      this.resCodeDisplay = formatJson(jsonStr);
+      // const jsonStr = JSON.stringify(this.jsonData);
+      if(this.type === 0){
+        this.resCodeDisplay = formatJson(this.responseData);
+      }else if(this.type === 1){
+        this.resCodeDisplay = this.formateXml(this.responseData);
+      }else{
+        this.resCodeDisplay = this.responseData;
+      }
       setTimeout(() => {
         this.drawResCode(this.resCodeDisplay);
       }, 200);
@@ -150,11 +248,13 @@ export default {
       this.dataNoteArr = [];
 
       //生成数据类型
-      var makeDataNote = (oj,indexNum) => {
+      var makeDataNote = (oj, indexNum) => {
         oj.forEach((el) => {
           if (el.childs && el.childs.length) {
             //根节点不显示
-            if (!(indexNum == 0 && (el.type === "array" || el.type === "object"))) {
+            if (
+              !(indexNum == 0 && (el.type === "array" || el.type === "object"))
+            ) {
               this.dataNoteArr.push({
                 name: el.name,
                 description: el.description,
@@ -162,10 +262,9 @@ export default {
               });
             }
             //如果当前是数组，但是数组下的元素不是object，则跳出
-            if(el.type === "array" && el.childs[0].type !== "object"){
+            if (el.type === "array" && el.childs[0].type !== "object") {
               return;
-            }
-            else if (el.type === "array" && el.childs[0].type === "object") {
+            } else if (el.type === "array" && el.childs[0].type === "object") {
               makeDataNote(el.childs[0].childs, indexNum + 1);
             } else {
               makeDataNote(el.childs, indexNum + 1);
@@ -191,15 +290,14 @@ export default {
         }
 
         let vals = $("#res_code").children("span.hljs-attr");
-        console.log("showParamsNote----->",vals);
 
         vals.each((index, el) => {
-          let indexVal = this.dataNoteArr.find(x => el.innerText === "\"" + x.name + "\"");
-          if (indexVal) {
+          let indexVal = this.dataNoteArr.find(
+            (x) => el.innerText === '"' + x.name + '"'
+          );
+          if (indexVal && indexVal.description) {
             $(el).append(
-              $(
-                `<span class="label note">${indexVal.description}</span>`
-              )
+              $(`<span class="label note">${indexVal.description}</span>`)
             );
           }
         });
@@ -269,7 +367,7 @@ export default {
 
     //显示数据类型
     showDataType: function () {
-      if (this.dataTypeShow) {
+      if (this.dataTypeShow && this.type === 0) {
         let vals = $("#res_code").children(
           "span:not(.hljs-attr):not(.hljs-punctuation)"
         );
