@@ -376,8 +376,6 @@ export default {
             $(
               `<span class="label type">${
                 // this.dataTypes[this.dataTypeArr[index]]
-                // this.dataNoteArr.find(x => el.innerText === "\"" + x.name + "\"").type
-                // this.dataTypeArr[index]
                 typeof JSON.parse(el.innerText)
               }</span>`
             )
