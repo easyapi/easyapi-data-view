@@ -1,6 +1,6 @@
 <template>
   <div class="ea-json-view">
-    <div class="ea-json-view_control" v-if="type === 0">
+    <div class="ea-json-view_control" v-if="type === 'json'">
       <el-checkbox v-model="dataNoteShow">数据注释</el-checkbox>
       <el-checkbox v-model="dataTypeShow">数据类型</el-checkbox>
     </div>
@@ -43,7 +43,7 @@ export default {
     };
   },
   created() {
-    if (this.type === 'json') {
+    if (this.type === "json") {
       this.makeParamsNote();
       this.makeDataType();
     }
@@ -57,7 +57,7 @@ export default {
       this.showDataType();
     },
     commentData: function () {
-      if (this.type === 'json') {
+      if (this.type === "json") {
         this.makeParamsNote();
         this.makeDataType();
       }
@@ -213,11 +213,11 @@ export default {
         return;
       }
       // const jsonStr = JSON.stringify(this.jsonData);
-      if(this.type === 'json'){
+      if (this.type === "json") {
         this.resCodeDisplay = formatJson(this.responseData);
-      }else if(this.type === 'xml'){
+      } else if (this.type === "xml") {
         this.resCodeDisplay = this.formateXml(this.responseData);
-      }else{
+      } else {
         this.resCodeDisplay = this.responseData;
       }
       setTimeout(() => {
@@ -289,18 +289,31 @@ export default {
           return;
         }
 
-        let vals = $("#res_code").children("span.hljs-attr");
+        let vals = $("#res_code").children();
 
         vals.each((index, el) => {
-          let indexVal = this.dataNoteArr.find(
-            (x) => el.innerText === '"' + x.name + '"'
-          );
-          if (indexVal && indexVal.description) {
-            $(el).append(
-              $(`<span class="label note">${indexVal.description}</span>`)
+          if (el.className !== "hljs-attr") {
+            let indexVal = this.dataNoteArr.find(
+              (x) => vals[index - 1].innerText === '"' + x.name + '"'
             );
+            if (indexVal && indexVal.description) {
+              $(el).append($(`<span class="label note">${indexVal.description}</span>`));
+            }
           }
         });
+
+        // let vals = $("#res_code").children("span.hljs-attr");
+
+        // vals.each((index, el) => {
+        //   let indexVal = this.dataNoteArr.find(
+        //     (x) => el.innerText === '"' + x.name + '"'
+        //   );
+        //   if (indexVal && indexVal.description) {
+        //     $(el).append(
+        //       $(`<span class="label note">${indexVal.description}</span>`)
+        //     );
+        //   }
+        // });
       } else {
         $("#res_code").find(".label.note").remove();
       }
@@ -367,18 +380,28 @@ export default {
 
     //显示数据类型
     showDataType: function () {
-      if (this.dataTypeShow && this.type === 'json') {
-        let vals = $("#res_code").children(
-          "span:not(.hljs-attr):not(.hljs-punctuation)"
-        );
+      if (this.dataTypeShow && this.type === "json") {
+        // let vals = $("#res_code").children(
+        //   "span:not(.hljs-attr):not(.hljs-punctuation)"
+        // );
+        let vals = $("#res_code").children();
+
         vals.each((index, el) => {
-          $(el).append(
-            $(
-              `<span class="label type">${
-                typeof JSON.parse(el.innerText)
-              }</span>`
-            )
-          );
+          if (el.className !== "hljs-attr") {
+            let indexVal = this.dataNoteArr.find(
+              (x) => vals[index - 1].innerText === '"' + x.name + '"'
+            );
+            if (indexVal && indexVal.type) {
+              $(el).append($(`<span class="label type">${indexVal.type}</span>`));
+            }
+          }
+          // $(el).append(
+          //   $(
+          //     `<span class="label type">${
+          //       typeof JSON.parse(el.innerText)
+          //     }</span>`
+          //   )
+          // );
         });
       } else {
         $("#res_code").find(".label.type").remove();
@@ -613,7 +636,8 @@ export default {
       }
 
       &.note {
-        background-color: #11b5ca;
+        color: #a5a5a5;
+        background-color: #f0f0f0;
       }
 
       &.none {
