@@ -19,7 +19,7 @@ export default {
   name: "app",
   data: function () {
     return {
-      type: "json",
+      type: "xml",
       // commentData: [
       //   {
       //     name: "username",
@@ -92,8 +92,8 @@ export default {
           ],
         },
       ],
-      jsonData: "{code: \"张三丰\",content:{latitude: 30,},}",
-      // jsonData: "<person sex=\"female\"><firstname>Anna</firstname><lastname>Smith</lastname></person>",
+      // jsonData: "{code: \"张三丰\",content:{latitude: 30,},}",
+      jsonData: "<person sex=\"female\"><code>Anna</code><latitude>Smith</latitude></person>",
     };
   },
 };

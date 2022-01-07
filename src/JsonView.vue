@@ -1,6 +1,6 @@
 <template>
   <div class="ea-json-view">
-    <div class="ea-json-view_control" v-if="type === 'json'">
+    <div class="ea-json-view_control" v-if="type === 'json' || type === 'xml'">
       <el-checkbox v-model="dataNoteShow">数据注释</el-checkbox>
       <el-checkbox v-model="dataTypeShow">数据类型</el-checkbox>
     </div>
@@ -43,7 +43,7 @@ export default {
     };
   },
   created() {
-    if (this.type === "json") {
+    if (this.type === "json" || this.type === "xml") {
       this.makeParamsNote();
       this.makeDataType();
     }
@@ -57,7 +57,7 @@ export default {
       this.showDataType();
     },
     commentData: function () {
-      if (this.type === "json") {
+      if (this.type === "json" || this.type === "xml") {
         this.makeParamsNote();
         this.makeDataType();
       }
@@ -290,17 +290,31 @@ export default {
         }
 
         let vals = $("#res_code").children();
-
-        vals.each((index, el) => {
-          if (el.className !== "hljs-attr") {
+        if (this.type === "json") {
+          vals.each((index, el) => {
+            if (el.className !== "hljs-attr") {
+              let indexVal = this.dataNoteArr.find(
+                (x) => vals[index - 1].innerText === '"' + x.name + '"'
+              );
+              if (indexVal && indexVal.description) {
+                $(el).append(
+                  $(`<span class="label note">${indexVal.description}</span>`)
+                );
+              }
+            }
+          });
+        } else if (this.type === "xml") {
+          vals.each((index, el) => {
             let indexVal = this.dataNoteArr.find(
-              (x) => vals[index - 1].innerText === '"' + x.name + '"'
+              (x) => el.innerText === '</' + x.name + '>' || el.innerText === '</' + x.name + '>' + x.type
             );
             if (indexVal && indexVal.description) {
-              $(el).append($(`<span class="label note">${indexVal.description}</span>`));
+              $(el).append(
+                $(`<span class="label note">${indexVal.description}</span>`)
+              );
             }
-          }
-        });
+          });
+        }
 
         // let vals = $("#res_code").children("span.hljs-attr");
 
@@ -380,29 +394,52 @@ export default {
 
     //显示数据类型
     showDataType: function () {
-      if (this.dataTypeShow && this.type === "json") {
+      if (this.dataTypeShow && (this.type === "json" || this.type === "xml")) {
         // let vals = $("#res_code").children(
         //   "span:not(.hljs-attr):not(.hljs-punctuation)"
         // );
         let vals = $("#res_code").children();
-
-        vals.each((index, el) => {
-          if (el.className !== "hljs-attr") {
-            let indexVal = this.dataNoteArr.find(
-              (x) => vals[index - 1].innerText === '"' + x.name + '"'
-            );
-            if (indexVal && indexVal.type) {
-              $(el).append($(`<span class="label type">${indexVal.type}</span>`));
+        if (this.type === "json") {
+          vals.each((index, el) => {
+            if (el.className !== "hljs-attr") {
+              let indexVal = this.dataNoteArr.find(
+                (x) => vals[index - 1].innerText === '"' + x.name + '"'
+              );
+              if (indexVal && indexVal.type) {
+                $(el).append(
+                  $(`<span class="label type">${indexVal.type}</span>`)
+                );
+              }
             }
-          }
-          // $(el).append(
-          //   $(
-          //     `<span class="label type">${
-          //       typeof JSON.parse(el.innerText)
-          //     }</span>`
-          //   )
+            // $(el).append(
+            //   $(
+            //     `<span class="label type">${
+            //       typeof JSON.parse(el.innerText)
+            //     }</span>`
+            //   )
+            // );
+          });
+        } else if (this.type === "xml") {
+          vals.each((index, el) => {
+              let indexVal = this.dataNoteArr.find(
+                (x) => (el.innerText === '</' + x.name + '>') || (el.innerText === '</' + x.name + '>' + x.description ? x.description : "")
+              );
+              if (indexVal && indexVal.type) {
+                $(el).append(
+                  $(`<span class="label type">${indexVal.type}</span>`)
+                );
+              }
+            
+          });
+          // let indexVal = this.dataNoteArr.find(
+          //   (x) => vals[index].innerText === '"</' + x.name + '>"'
           // );
-        });
+          // if (indexVal && indexVal.type) {
+          //   $(el).append(
+          //     $(`<span class="label type">${indexVal.type}</span>`)
+          //   );
+          // }
+        }
       } else {
         $("#res_code").find(".label.type").remove();
       }
