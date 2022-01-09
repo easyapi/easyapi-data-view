@@ -306,7 +306,9 @@ export default {
         } else if (this.type === "xml") {
           vals.each((index, el) => {
             let indexVal = this.dataNoteArr.find(
-              (x) => el.innerText === '</' + x.name + '>' || el.innerText === '</' + x.name + '>' + x.type
+              (x) =>
+                el.innerText === "</" + x.name + ">" ||
+                el.innerText === "</" + x.name + ">" + x.type
             );
             if (indexVal && indexVal.description) {
               $(el).append(
@@ -421,15 +423,18 @@ export default {
           });
         } else if (this.type === "xml") {
           vals.each((index, el) => {
-              let indexVal = this.dataNoteArr.find(
-                (x) => (el.innerText === '</' + x.name + '>') || (el.innerText === '</' + x.name + '>' + x.description ? x.description : "")
+            let indexVal = this.dataNoteArr.find(
+              (x) =>
+                el.innerText === "</" + x.name + ">" ||
+                (el.innerText === "</" + x.name + ">" + x.description
+                  ? x.description
+                  : "")
+            );
+            if (indexVal && indexVal.type) {
+              $(el).append(
+                $(`<span class="label type">${indexVal.type}</span>`)
               );
-              if (indexVal && indexVal.type) {
-                $(el).append(
-                  $(`<span class="label type">${indexVal.type}</span>`)
-                );
-              }
-            
+            }
           });
           // let indexVal = this.dataNoteArr.find(
           //   (x) => vals[index].innerText === '"</' + x.name + '>"'
@@ -645,11 +650,11 @@ export default {
     }
   }
 
-  .el-checkbox__label {
-    color: #11b5ca !important;
+  .el-checkbox__input.is-checked + .el-checkbox__label {
+    color: #11b5ca;
   }
-
-  .el-checkbox__inner {
+  .el-checkbox__input.is-checked .el-checkbox__inner,
+  .el-checkbox__input.is-indeterminate .el-checkbox__inner {
     border-color: #11b5ca !important;
     background-color: #11b5ca !important;
   }
