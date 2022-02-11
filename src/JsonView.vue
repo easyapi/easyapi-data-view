@@ -430,10 +430,21 @@ export default {
                   ? x.description
                   : "")
             );
+
             if (indexVal && indexVal.type) {
-              $(el).append(
-                $(`<span class="label type">${indexVal.type}</span>`)
-              );
+              if (indexVal.type == "int") {
+                $(el).append(
+                  $(`<span class="label type-int">${indexVal.type}</span>`)
+                );
+              }else if(indexVal.type == "string"){
+                $(el).append(
+                  $(`<span class="label type-string">${indexVal.type}</span>`)
+                );
+              }else {
+                $(el).append(
+                  $(`<span class="label type">${indexVal.type}</span>`)
+                );
+              }
             }
           });
           // let indexVal = this.dataNoteArr.find(
@@ -671,15 +682,23 @@ export default {
       padding: 1px 5px;
       font-size: 0.6em;
       color: #fff;
-
+      // 类型颜色
       &.type {
-        color: #a5a5a5;
-        background-color: #f0f0f0;
+        color: #ffffff;
+        background-color: #047373;
       }
-
+      &.type-int {
+        color: #ffffff;
+        background-color: #AF73B3;
+      }
+      &.type-string {
+        color: #ffffff;
+        background-color: #da2f05;
+      }
+      // 注释颜色
       &.note {
-        color: #a5a5a5;
-        background-color: #f0f0f0;
+        color: #ffffff;
+        background-color: #14c1d6;
       }
 
       &.none {
