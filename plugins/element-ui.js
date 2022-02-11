@@ -1,5 +1,6 @@
-import { Checkbox, CheckboxButton, CheckboxGroup } from "element-ui";
-const element = {
+import {Checkbox, CheckboxButton, CheckboxGroup} from "element-ui";
+
+const Element = {
   install: function (Vue) {
     Vue.use(Checkbox);
     Vue.use(CheckboxButton);
@@ -7,4 +8,4 @@ const element = {
   },
 };
 
-export default element;
+export default Element;

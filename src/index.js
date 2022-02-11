@@ -1,11 +1,11 @@
 import Vue from "vue";
 import JsonView from "./JsonView.vue";
 import PackageFile from "../package.json";
-import element from "./element/index";
+import Element from "../plugins/element-ui";
 
 const VERSION = PackageFile.version;
 
-Vue.use(element);
+Vue.use(Element);
 
 const install = (Vue) => {
   if (install.installed) return;

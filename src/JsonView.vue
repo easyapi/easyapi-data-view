@@ -693,12 +693,12 @@ export default {
       }
       &.type-string {
         color: #ffffff;
-        background-color: #da2f05;
+        background-color: #999999;
       }
       // 注释颜色
       &.note {
         color: #ffffff;
-        background-color: #14c1d6;
+        background-color: #11b5ca;
       }
 
       &.none {
