@@ -1,10 +1,10 @@
 <template>
-  <div class="ea-json-view">
-    <div class="ea-json-view_control" v-if="type === 'json' || type === 'xml'">
+  <div class="ea-data-view">
+    <div class="ea-data-view_control" v-if="type === 'json' || type === 'xml'">
       <el-checkbox v-model="dataNoteShow">数据注释</el-checkbox>
       <el-checkbox v-model="dataTypeShow">数据类型</el-checkbox>
     </div>
-    <pre class="ea-json-view_viewport" id="res_code"></pre>
+    <pre class="ea-data-view_viewport" id="res_code"></pre>
   </div>
 </template>
 
@@ -13,7 +13,7 @@ import hljs from "highlight.js";
 import { formatJson } from "./utils/index";
 
 export default {
-  name: "easyapi-json-view",
+  name: "easyapi-data-view",
   props: {
     commentData: {},
     responseData: {},
@@ -82,8 +82,7 @@ export default {
         .replace(/<!--(.+?)-->/g, function ($0, text) {
           var ret = "<!--" + escape(text) + "-->";
           return ret;
-        })
-        .replace(/\r/g, "\n");
+        }).replace(/\r/g, "\n");
       //调整格式  以压栈方式递归调整缩进
       var rgx =
         /\n(<(([^\?]).+?)(?:\s|\s*?>|\s*?(\/)>)(?:.*?(?:(?:(\/)>)|(?:<(\/)\2>)))?)/gm;
@@ -631,15 +630,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.ea-json-view {
+.ea-data-view {
   width: 100%;
   border: 1px solid #e4e4e4;
 
-  .ea-json-view_control {
+  .ea-data-view_control {
     padding: 10px 12px;
     background: #ececec;
   }
-  .ea-json-view_viewport {
+  .ea-data-view_viewport {
     margin: 0;
     padding: 12px;
   }
@@ -647,7 +646,7 @@ export default {
 </style>
 
 <style lang="less">
-.ea-json-view {
+.ea-data-view {
   .hljs-attr {
     display: inline-block;
     margin-bottom: 5px;

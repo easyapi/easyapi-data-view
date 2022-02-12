@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import JsonView from '../src/index.js'
+import DataView from '../src/index.js'
 import App from './App.vue'
 
-Vue.use(JsonView);
+Vue.use(DataView);
 
 
 /* eslint-disable no-new */

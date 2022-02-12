@@ -1,5 +1,5 @@
 import Vue from "vue";
-import JsonView from "./JsonView.vue";
+import DataView from "./index.vue";
 import PackageFile from "../package.json";
 import Element from "../plugins/element-ui";
 
@@ -10,12 +10,12 @@ Vue.use(Element);
 const install = (Vue) => {
   if (install.installed) return;
 
-  Vue.component("easyapi-json-view", JsonView);
+  Vue.component("easyapi-data-view", DataView);
 };
 
 export default install;
 
 export const components = {
-  JsonView,
+  DataView,
   VERSION,
 };

@@ -1,7 +1,7 @@
 {
-  "name": "easyapi-json-view",
-  "version": "1.0.24",
-  "description": "EasyAPI JSON 注释显示组件",
+  "name": "easyapi-data-view",
+  "version": "1.0.25",
+  "description": "EasyAPI（JSON、XML）注释显示组件",
   "author": "easyapi",
   "keywords": [
     "vue",
@@ -9,14 +9,14 @@
     "view"
   ],
   "main": "./src/index.js",
-  "module": "./dist/easyapi-json-view.js",
+  "module": "./dist/easyapi-data-view.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/easyapi/easyapi-json-view.git"
+    "url": "git+https://github.com/easyapi/easyapi-data-view.git"
   },
-  "homepage": "https://github.com/easyapi/easyapi-json-view",
+  "homepage": "https://github.com/easyapi/easyapi-data-view",
   "bugs": {
-    "url": "https://github.com/easyapi/easyapi-json-view/issues"
+    "url": "https://github.com/easyapi/easyapi-data-view/issues"
   },
   "license": "Apache-2.0",
   "scripts": {

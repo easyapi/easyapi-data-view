@@ -1,12 +1,12 @@
-# EasyAPI JSON 注释显示组件
+# EasyAPI注释显示组件
 
 ## 组件命名
 
-easyapi-json-view
+easyapi-data-view
 
 ## 组件描述
 
-EasyAPI JSON 注释显示组件，主要作用就是美化显示 JSON 数据，在此基础上，多一个类型和注释（类型一般 JSON 显示组件也有）。
+EasyAPI注释显示组件，主要作用就是美化显示 JSON、XML 数据，在此基础上，多一个类型和注释。
 
 ## 组件效果图
 
@@ -54,7 +54,7 @@ _数据类型（字段类型）_
 ## Example
 
 ```
-<easyapi-json-view :jsonData="jsonData" :commentData="commentData"></easyapi-json-view>
+<easyapi-data-view :jsonData="jsonData" :commentData="commentData"></easyapi-data-view>
 
 <script>
 
@@ -108,12 +108,10 @@ export default {
 ```
 ├── dist                      打包后产物
 ├── example                   运行用例
+├── plugins                   插件
 ├── src                       源码
 │   ├── utils                 工具包
-│   ├── JsonView.vue          组件源码
-│   ├── assets                资源
-│   │   ├── font              字体
-│   │   └── styles            样式
+│   ├── index.vue             组件源码
 │   └── index.js
 ├── webpack.base.js           webpack配置基础
 ├── webpack.build.js          webpack配置prod
