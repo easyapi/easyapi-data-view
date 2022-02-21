@@ -3,11 +3,10 @@
     <div class="editor-w clearfix">
       <div class="w-2">
         <div class="editor">
-          <!-- <easyapi-data-view
-            :jsonData="jsonData"
-            :commentData="commentData"
-          ></easyapi-data-view> -->
-          <easyapi-data-view :responseData="jsonData" :commentData="commentData" :type="type"></easyapi-data-view>
+          <easyapi-data-view :responseData="jsonData" :commentData="jsonCommentData" :type="jsonType"></easyapi-data-view>
+        </div>
+        <div class="editor">
+          <easyapi-data-view :responseData="xmlData" :commentData="xmlCommentData" :type="xmlType"></easyapi-data-view>
         </div>
       </div>
     </div>
@@ -19,40 +18,43 @@ export default {
   name: "app",
   data: function () {
     return {
-      type: "xml",
-      // commentData: [
-      //   {
-      //     name: "username",
-      //     description: "",
-      //     type: "array",
-      //     demo: "zhangsan",
-      //     childs: [
-      //       {
-      //         name: "pass",
-      //         description: "密码",
-      //         type: "object",
-      //         demo: 222,
-      //         childs: [
-      //           {
-      //             name: "pass",
-      //             description: "密码",
-      //             type: "string",
-      //             demo: "123",
-      //             childs: [],
-      //           },
-      //           {
-      //             name: "name",
-      //             description: "名字",
-      //             type: "int",
-      //             demo: "zhangsan",
-      //             childs: [],
-      //           },
-      //         ],
-      //       },
-      //     ],
-      //   },
-      // ],
-      commentData: [
+      jsonType: "json",
+      jsonData: "{\"code\":\"张三丰\",\"content\":{\"latitude\":30}}",
+      jsonCommentData: [
+        {
+          name: "username",
+          description: "",
+          type: "array",
+          demo: "zhangsan",
+          childs: [
+            {
+              name: "pass",
+              description: "密码",
+              type: "object",
+              demo: 222,
+              childs: [
+                {
+                  name: "pass",
+                  description: "密码",
+                  type: "string",
+                  demo: "123",
+                  childs: [],
+                },
+                {
+                  name: "name",
+                  description: "名字",
+                  type: "int",
+                  demo: "zhangsan",
+                  childs: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      xmlType: "xml",
+      xmlData: "<person sex=\"female\"><code>Anna</code><latitude>Smith</latitude></person>",
+      xmlCommentData: [
         {
           name: "根节点",
           description: "",
@@ -92,8 +94,6 @@ export default {
           ],
         },
       ],
-      // jsonData: "{code: \"张三丰\",content:{latitude: 30,},}",
-      jsonData: "<person sex=\"female\"><code>Anna</code><latitude>Smith</latitude></person>",
     };
   },
 };

@@ -6,6 +6,7 @@
   "keywords": [
     "vue",
     "json",
+    "xml",
     "view"
   ],
   "main": "./src/index.js",
