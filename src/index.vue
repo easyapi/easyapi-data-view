@@ -10,7 +10,7 @@
 
 <script>
 import hljs from "highlight.js";
-import { formatJson } from "./utils/index";
+import {formatJson, formatXml} from "./utils/format";
 
 export default {
   name: "easyapi-data-view",
@@ -26,8 +26,6 @@ export default {
       dataTypeArr: [],
       dataNoteArr: [],
       paramsNote: [],
-
-      // jsonData: {},
 
       //数据格式
       dataTypes: {
@@ -65,83 +63,10 @@ export default {
     },
   },
   methods: {
-    formateXml() {
-      let text = this.responseData;
-      let that = this;
-      //使用replace去空格
-      text =
-        "\n" +
-        text
-          .replace(/(<\w+)(\s.*?>)/g, function ($0, name, props) {
-            return name + " " + props.replace(/\s+(\w+=)/g, " $1");
-          })
-          .replace(/>\s*?</g, ">\n<");
-      //处理注释
-      text = text
-        .replace(/\n/g, "\r")
-        .replace(/<!--(.+?)-->/g, function ($0, text) {
-          var ret = "<!--" + escape(text) + "-->";
-          return ret;
-        }).replace(/\r/g, "\n");
-      //调整格式  以压栈方式递归调整缩进
-      var rgx =
-        /\n(<(([^\?]).+?)(?:\s|\s*?>|\s*?(\/)>)(?:.*?(?:(?:(\/)>)|(?:<(\/)\2>)))?)/gm;
-      var nodeStack = [];
-      var output = text.replace(
-        rgx,
-        function (
-          $0,
-          all,
-          name,
-          isBegin,
-          isCloseFull1,
-          isCloseFull2,
-          isFull1,
-          isFull2
-        ) {
-          var isClosed =
-            isCloseFull1 == "/" ||
-            isCloseFull2 == "/" ||
-            isFull1 == "/" ||
-            isFull2 == "/";
-          var prefix = "";
-          if (isBegin == "!") {
-            //!开头
-            prefix = that.setPrefix(nodeStack.length);
-          } else {
-            if (isBegin != "/") {
-              ///开头
-              prefix = that.setPrefix(nodeStack.length);
-              if (!isClosed) {
-                //非关闭标签
-                nodeStack.push(name);
-              }
-            } else {
-              nodeStack.pop(); //弹栈
-              prefix = that.setPrefix(nodeStack.length);
-            }
-          }
-          var ret = "\n" + prefix + all;
-          return ret;
-        }
-      );
-      var prefixSpace = -1;
-      var outputText = output.substring(1);
-      //还原注释内容
-      outputText = outputText
-        .replace(/\n/g, "\r")
-        .replace(/(\s*)<!--(.+?)-->/g, function ($0, prefix, text) {
-          if (prefix.charAt(0) == "\r") prefix = prefix.substring(1);
-          text = unescape(text).replace(/\r/g, "\n");
-          var ret =
-            "\n" + prefix + "<!--" + text.replace(/^\s*/gm, prefix) + "-->";
-          return ret;
-        });
-      outputText = outputText.replace(/\s+$/g, "").replace(/\r/g, "\r\n");
-      return outputText;
-    },
-
-    //计算头函数 用来缩进
+    /**
+     * 计算头函数 用来缩进
+     * @param prefixIndex
+     */
     setPrefix(prefixIndex) {
       var result = "";
       var span = "    "; //缩进长度
@@ -153,8 +78,11 @@ export default {
       return result;
     },
 
+    /**
+     *
+     */
     makeJsonEditor: function (dataArr) {
-      if (!dataArr || dataArr.length == 0) {
+      if (!dataArr || dataArr.length === 0) {
         return [];
       }
       const revertWithObj = function (data) {
@@ -176,6 +104,9 @@ export default {
         return r;
       };
 
+      /**
+       *
+       */
       const revertWithArray = function (data) {
         let arr = [];
         for (let i = 0; i < data.length; ++i) {
@@ -194,6 +125,9 @@ export default {
         return arr;
       };
 
+      /**
+       *
+       */
       const revertMain = function (data) {
         if (data[0].type === "array") {
           return revertWithArray(data[0].childs);
@@ -205,17 +139,18 @@ export default {
       return revertMain(dataArr);
     },
 
-    // 返回信息
+    /**
+     * 返回信息
+     */
     resCode: function () {
       // this.clearNote();
       if (!this.responseData) {
         return;
       }
-      // const jsonStr = JSON.stringify(this.jsonData);
       if (this.type === "json") {
         this.resCodeDisplay = formatJson(this.responseData);
       } else if (this.type === "xml") {
-        this.resCodeDisplay = this.formateXml(this.responseData);
+        this.resCodeDisplay = formatXml(this.responseData);
       } else {
         this.resCodeDisplay = this.responseData;
       }
@@ -224,7 +159,9 @@ export default {
       }, 200);
     },
 
-    //绘制res body
+    /**
+     * 绘制res body
+     */
     drawResCode: function (content) {
       var target = document.getElementById("res_code");
       target.textContent = content;
@@ -242,7 +179,9 @@ export default {
       this.dataTypeShow = true;
     },
 
-    //生成数据注释,主要将数据平铺展示
+    /**
+     * 生成数据注释,主要将数据平铺展示
+     */
     makeParamsNote: function () {
       this.dataNoteArr = [];
 
@@ -334,11 +273,13 @@ export default {
       }
     },
 
-    //生成数据注释
+    /**
+     * 生成数据注释
+     */
     makeDataType: function () {
       this.dataTypeArr = [];
       var that = this;
-      if (!this.commentData || this.commentData.length == 0) {
+      if (!this.commentData || this.commentData.length === 0) {
         return [];
       }
       const revertWithObj = function (data) {
@@ -353,7 +294,6 @@ export default {
             that.dataTypeArr.push(el.type);
           }
         }
-        return;
       };
 
       const revertWithArray = function (data) {
@@ -367,7 +307,6 @@ export default {
             that.dataTypeArr.push(el.type);
           }
         }
-        return;
       };
 
       const revertMain = function (data) {
@@ -431,15 +370,15 @@ export default {
             );
 
             if (indexVal && indexVal.type) {
-              if (indexVal.type == "int") {
+              if (indexVal.type === "int") {
                 $(el).append(
                   $(`<span class="label type-int">${indexVal.type}</span>`)
                 );
-              }else if(indexVal.type == "string"){
+              } else if (indexVal.type === "string") {
                 $(el).append(
                   $(`<span class="label type-string">${indexVal.type}</span>`)
                 );
-              }else {
+              } else {
                 $(el).append(
                   $(`<span class="label type">${indexVal.type}</span>`)
                 );
@@ -483,10 +422,10 @@ export default {
             val = "";
           }
 
-          if (this.getType(val) == "object") {
+          if (this.getType(val) === "object") {
             parsedVal = parseJson(val);
             // result.push(fr)
-          } else if (this.getType(val) == "array") {
+          } else if (this.getType(val) === "array") {
             parsedVal = parseArray(val);
             // result.push(fr)
           }
@@ -497,7 +436,7 @@ export default {
             description: "",
           };
 
-          if (opt.type == "array" || opt.type == "object") {
+          if (opt.type === "array" || opt.type === "object") {
             opt.childs = parsedVal;
             opt.description = null;
           } else {
@@ -516,9 +455,9 @@ export default {
         for (let i = 0; i < arrayObj.length; ++i) {
           let val = arrayObj[i];
           let parsedVal = val;
-          if (this.getType(val) == "object") {
+          if (this.getType(val) === "object") {
             parsedVal = parseJson(val);
-          } else if (this.getType(val) == "array") {
+          } else if (this.getType(val) === "array") {
             parsedVal = parseArray(val);
           }
 
@@ -528,7 +467,7 @@ export default {
             description: "",
           };
 
-          if (opt.type == "array" || opt.type == "object") {
+          if (opt.type === "array" || opt.type === "object") {
             opt.childs = parsedVal;
             opt.description = null;
           } else {
@@ -571,17 +510,15 @@ export default {
           let el = data[i];
           let key, val;
           key = el.name;
-          if (el.type == "array") {
+          if (el.type === "array") {
             val = revertWithArray(el.childs);
-          } else if (el.type == "object") {
+          } else if (el.type === "object") {
             val = revertWithObj(el.childs);
           } else {
             val = el.description;
           }
-
           r[key] = val;
         }
-
         return r;
       };
 
@@ -591,9 +528,9 @@ export default {
         for (let i = 0; i < data.length; ++i) {
           let el = data[i];
           let r;
-          if (el.type == "array") {
+          if (el.type === "array") {
             r = revertWithArray(el.childs);
-          } else if (el.type == "object") {
+          } else if (el.type === "object") {
             r = revertWithObj(el.childs);
           } else {
             r = el.description;
@@ -638,6 +575,7 @@ export default {
     padding: 10px 12px;
     background: #ececec;
   }
+
   .ea-data-view_viewport {
     margin: 0;
     padding: 12px;
@@ -663,6 +601,7 @@ export default {
   .el-checkbox__input.is-checked + .el-checkbox__label {
     color: #11b5ca;
   }
+
   .el-checkbox__input.is-checked .el-checkbox__inner,
   .el-checkbox__input.is-indeterminate .el-checkbox__inner {
     border-color: #11b5ca !important;
@@ -686,14 +625,17 @@ export default {
         color: #ffffff;
         background-color: #047373;
       }
+
       &.type-int {
         color: #ffffff;
         background-color: #AF73B3;
       }
+
       &.type-string {
         color: #ffffff;
         background-color: #999999;
       }
+
       // 注释颜色
       &.note {
         color: #ffffff;

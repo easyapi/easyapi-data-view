@@ -26,11 +26,10 @@
     "build": "webpack --progress --config webpack.build.js"
   },
   "dependencies": {
+    "vue": "^2.6.14",
     "element-ui": "^2.15.6",
     "highlight.js": "^11.4.0",
-    "jquery": "^3.6.0",
-    "vue": "^2.6.14",
-    "babel-plugin-component": "^1.1.1"
+    "jquery": "^3.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
@@ -46,7 +45,7 @@
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.7",
     "@babel/plugin-proposal-numeric-separator": "^7.16.7",
     "@babel/plugin-proposal-optional-chaining": "^7.16.7",
-    "@babel/plugin-proposal-pipeline-operator": "^7.16.7",
+    "@babel/plugin-proposal-pipeline-operator": "^7.17.6",
     "@babel/plugin-proposal-throw-expressions": "^7.16.7",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
