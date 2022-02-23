@@ -200,9 +200,6 @@ export default {
       if (this.type === "json") {
         children.each((index, el) => {
           if (el.className !== "hljs-attr") {
-            this.descriptionList.find(
-              (x) => console.log(children[index].innerText, x.name)
-            );
             let result = this.descriptionList.find(
               (x) => children[index].innerText === '"' + x.name + '"'
             );
