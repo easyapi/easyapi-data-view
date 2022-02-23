@@ -6,7 +6,7 @@
           <easyapi-data-view :responseData="jsonData" :commentData="jsonCommentData" :type="jsonType"></easyapi-data-view>
         </div>
         <div class="editor">
-          <easyapi-data-view :responseData="xmlData" :commentData="xmlCommentData" :type="xmlType"></easyapi-data-view>
+<!--          <easyapi-data-view :responseData="xmlData" :commentData="xmlCommentData" :type="xmlType"></easyapi-data-view>-->
         </div>
       </div>
     </div>
@@ -22,32 +22,24 @@ export default {
       jsonData: "{\"code\":\"张三丰\",\"content\":{\"latitude\":30}}",
       jsonCommentData: [
         {
-          name: "username",
-          description: "",
-          type: "array",
-          demo: "zhangsan",
+          name: "code",
+          description: "编码",
+          type: "string",
+          demo: "张三丰",
+          childs: []
+        },
+        {
+          name: "content",
+          description: "编码",
+          type: "object",
+          demo: "张三丰",
           childs: [
             {
-              name: "pass",
+              name: "latitude",
               description: "密码",
-              type: "object",
+              type: "int",
               demo: 222,
-              childs: [
-                {
-                  name: "pass",
-                  description: "密码",
-                  type: "string",
-                  demo: "123",
-                  childs: [],
-                },
-                {
-                  name: "name",
-                  description: "名字",
-                  type: "int",
-                  demo: "zhangsan",
-                  childs: [],
-                },
-              ],
+              childs: []
             },
           ],
         },

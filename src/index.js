@@ -1,5 +1,5 @@
 import Vue from "vue";
-import DataView from "./index.vue";
+import DataView from "./DataView.vue";
 import PackageFile from "../package.json";
 import Element from "../plugins/element-ui";
 

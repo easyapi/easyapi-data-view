@@ -15,8 +15,6 @@ let formatJson = function (txt, compress /*是否为压缩模式*/) {
     return;
   }
   let draw = [],
-    last = false,
-    This = this,
     line = compress ? "" : "\n",
     nodeCount = 0,
     maxDepth = 0;
@@ -44,16 +42,12 @@ let formatJson = function (txt, compress /*是否为压缩模式*/) {
       /*缩进']'换行,若非尾元素则添加逗号*/
     } else if (value && typeof value === "object") {
       /*处理对象*/
-      draw.push(
-        tab + (formObj ? '"' + name + '":' : "") + "{" + line
-      );
+      draw.push(tab + (formObj ? '"' + name + '":' : "") + "{" + line);
       /*缩进'{' 然后换行*/
       let len = 0, i = 0;
       for (let key in value) len++;
       for (let key in value) notify(key, value[key], ++i === len, indent, true);
-      draw.push(
-        tab + "}" + (isLast ? line : "," + line)
-      );
+      draw.push(tab + "}" + (isLast ? line : "," + line));
       /*缩进'}'换行,若非尾元素则添加逗号*/
     } else {
       if (typeof value === "string") value = '"' + value + '"';
@@ -76,7 +70,6 @@ let formatJson = function (txt, compress /*是否为压缩模式*/) {
  * XML格式化
  */
 let formatXml = function (text) {
-  let that = this;
   //使用replace去空格
   text = "\n" + text.replace(/(<\w+)(\s.*?>)/g, function ($0, name, props) {
     return name + " " + props.replace(/\s+(\w+=)/g, " $1");
@@ -105,18 +98,18 @@ let formatXml = function (text) {
       var prefix = "";
       if (isBegin === "!") {
         //!开头
-        prefix = that.setPrefix(nodeStack.length);
+        prefix = setPrefix(nodeStack.length);
       } else {
         if (isBegin !== "/") {
           ///开头
-          prefix = that.setPrefix(nodeStack.length);
+          prefix = setPrefix(nodeStack.length);
           if (!isClosed) {
             //非关闭标签
             nodeStack.push(name);
           }
         } else {
           nodeStack.pop(); //弹栈
-          prefix = that.setPrefix(nodeStack.length);
+          prefix = setPrefix(nodeStack.length);
         }
       }
       return "\n" + prefix + all;
@@ -136,6 +129,21 @@ let formatXml = function (text) {
     });
   outputText = outputText.replace(/\s+$/g, "").replace(/\r/g, "\r\n");
   return outputText;
+}
+
+/**
+ * 计算头函数 用来缩进
+ * @param prefixIndex
+ */
+function setPrefix(prefixIndex) {
+  var result = "";
+  var span = "    "; //缩进长度
+  var output = [];
+  for (var i = 0; i < prefixIndex; ++i) {
+    output.push(span);
+  }
+  result = output.join("");
+  return result;
 }
 
 export {
