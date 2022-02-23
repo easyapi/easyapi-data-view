@@ -3,10 +3,11 @@
     <div class="editor-w clearfix">
       <div class="w-2">
         <div class="editor">
-          <easyapi-data-view :responseData="jsonData" :commentData="jsonCommentData" :type="jsonType"></easyapi-data-view>
+          <easyapi-data-view :responseData="jsonData" :commentData="jsonCommentData"
+                             :type="jsonType"></easyapi-data-view>
         </div>
         <div class="editor">
-<!--          <easyapi-data-view :responseData="xmlData" :commentData="xmlCommentData" :type="xmlType"></easyapi-data-view>-->
+          <!--          <easyapi-data-view :responseData="xmlData" :commentData="xmlCommentData" :type="xmlType"></easyapi-data-view>-->
         </div>
       </div>
     </div>
@@ -24,7 +25,7 @@ export default {
         {
           name: "code",
           description: "编码",
-          type: "string",
+          type: "int",
           demo: "张三丰",
           childs: []
         },
@@ -38,11 +39,11 @@ export default {
               name: "latitude",
               description: "密码",
               type: "int",
-              demo: 222,
+              demo: "222",
               childs: []
-            },
-          ],
-        },
+            }
+          ]
+        }
       ],
       xmlType: "xml",
       xmlData: "<person sex=\"female\"><code>Anna</code><latitude>Smith</latitude></person>",
