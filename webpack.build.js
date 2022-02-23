@@ -16,8 +16,5 @@ config.output = {
   library: 'easyapi-data-view',
   libraryTarget: 'umd',
 };
-config.externals = {
-  vue: 'Vue',
-};
 
 module.exports = config;
