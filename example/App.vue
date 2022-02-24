@@ -3,11 +3,10 @@
     <div class="editor-w clearfix">
       <div class="w-2">
         <div class="editor">
-          <easyapi-data-view :responseData="jsonData" :commentData="jsonCommentData"
-                             :type="jsonType"></easyapi-data-view>
+<!--          <easyapi-data-view :responseData="jsonData" :commentData="jsonCommentData" :type="jsonType"></easyapi-data-view>-->
         </div>
         <div class="editor">
-          <!--          <easyapi-data-view :responseData="xmlData" :commentData="xmlCommentData" :type="xmlType"></easyapi-data-view>-->
+              <easyapi-data-view :responseData="xmlData" :commentData="xmlCommentData" :type="xmlType"></easyapi-data-view>
         </div>
       </div>
     </div>
@@ -56,7 +55,7 @@ export default {
           childs: [
             {
               name: "code",
-              description: null,
+              description: "12121",
               type: "string",
               demo: true,
               childs: [],

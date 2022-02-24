@@ -1,8 +1,8 @@
 <template>
   <div class="ea-data-view">
     <div class="ea-data-view_control" v-if="type === 'json' || type === 'xml'">
-      <el-checkbox v-model="ifShowDescription">数据注释</el-checkbox>
-      <el-checkbox v-model="ifShowType">数据类型</el-checkbox>
+      <el-checkbox v-model="ifShowDescription" @change="showNote()">数据注释</el-checkbox>
+      <el-checkbox v-model="ifShowType" @change="showNote()">数据类型</el-checkbox>
     </div>
     <pre class="ea-data-view_viewport" id="response"></pre>
   </div>
@@ -23,29 +23,14 @@ export default {
     return {
       ifShowDescription: false,//是否显示数据注释
       ifShowType: false,//是否显示数据类型
-      typeList: [],
-      descriptionList: []
+      noteList: []
     };
   },
   created() {
-    if (this.type === "json" || this.type === "xml") {
-      this.makeDescriptionList();
-      this.makeTypeList();
-    }
     this.response();
   },
   watch: {
-    ifShowDescription: function () {
-      this.showNote();
-    },
-    ifShowType: function () {
-      this.showNote();
-    },
     commentData: function () {
-      if (this.type === "json" || this.type === "xml") {
-        this.makeDescriptionList();
-        this.makeTypeList();
-      }
       this.response();
     },
   },
@@ -54,6 +39,9 @@ export default {
      * 返回信息
      */
     response: function () {
+      if (this.type === "json" || this.type === "xml") {
+        this.makeNoteList();
+      }
       // this.clean();
       if (!this.responseData) {
         return;
@@ -86,39 +74,17 @@ export default {
 
     /**
      * 生成数据注释
-     */
-    makeTypeList: function () {
-      this.typeList = [];
-      let that = this;
-      if (!this.commentData || this.commentData.length === 0) {
-        return [];
-      }
-      const makeTypeList = function (data) {
-        for (let i = 0; i < data.length; ++i) {
-          let el = data[i];
-          if (el.type === "array" || el.type === "object") {
-            makeTypeList(el.childs);
-          } else {
-            that.typeList.push(el.type);
-          }
-        }
-      };
-      return makeTypeList(this.commentData);
-    },
-
-    /**
-     * 生成数据注释
      * 主要将数据平铺展示
      */
-    makeDescriptionList: function () {
-      this.descriptionList = [];
+    makeNoteList: function () {
+      this.noteList = [];
       //生成数据类型
-      let makeDescriptionList = (oj, indexNum) => {
+      let makeNoteList = (oj, indexNum) => {
         oj.forEach((el) => {
           if (el.childs && el.childs.length) {
             //根节点不显示
             if (!(indexNum === 0 && (el.type === "array" || el.type === "object"))) {
-              this.descriptionList.push({
+              this.noteList.push({
                 name: el.name,
                 description: el.description,
                 type: el.type,
@@ -128,12 +94,12 @@ export default {
             if (el.type === "array" && el.childs[0].type !== "object") {
               return;
             } else if (el.type === "array" && el.childs[0].type === "object") {
-              makeDescriptionList(el.childs[0].childs, indexNum + 1);
+              makeNoteList(el.childs[0].childs, indexNum + 1);
             } else {
-              makeDescriptionList(el.childs, indexNum + 1);
+              makeNoteList(el.childs, indexNum + 1);
             }
           } else {
-            this.descriptionList.push({
+            this.noteList.push({
               name: el.name,
               description: el.description,
               type: el.type,
@@ -141,7 +107,7 @@ export default {
           }
         });
       };
-      makeDescriptionList(this.commentData, 0);
+      makeNoteList(this.commentData, 0);
     },
 
     /**
@@ -161,40 +127,33 @@ export default {
       if (this.type === "json") {
         children.each((index, el) => {
           if (el.className !== "hljs-attr") {
-            let result = this.descriptionList.find(
-              (x) => children[index - 1].innerText === '"' + x.name + '"'
-            );
-            if (result) {
-              if (result.type && this.ifShowType) {
-                $(el).append($(`<span class="label type">${result.type}</span>`));
-              }
-              if (result.description && this.ifShowDescription) {
-                $(el).append($(`<span class="label description">${result.description}</span>`));
-              }
-            }
+            this.append(el, this.noteList.find((x) => children[index - 1].innerText === '"' + x.name + '"'))
           }
         });
       } else if (this.type === "xml") {
         children.each((index, el) => {
-          let result = this.descriptionList.find((x) => {
-            el.innerText === "</" + x.name + ">" || (el.innerText === "</" + x.name + ">" + x.description ? x.description : "")
-          });
-          // let result = this.descriptionList.find((x) => el.innerText === "</" + x.name + ">" || el.innerText === "</" + x.name + ">" + x.type);
-          if (result) {
-            if (result.type && this.ifShowType) {
-              if (result.type === "int") {
-                $(el).append($(`<span class="label type-int">${result.type}</span>`));
-              } else if (result.type === "string") {
-                $(el).append($(`<span class="label type-string">${result.type}</span>`));
-              } else {
-                $(el).append($(`<span class="label type">${result.type}</span>`));
-              }
-            }
-            if (result.description && this.ifShowDescription) {
-              $(el).append($(`<span class="label description">${result.description}</span>`));
-            }
-          }
+          this.append(el, this.noteList.find((x) => el.innerText === "</" + x.name + ">"))
         });
+      }
+    },
+
+    /**
+     * 追加在后面显示
+     */
+    append: function (el, result) {
+      if (result) {
+        if (result.type && this.ifShowType) {
+          if (result.type === "int") {
+            $(el).append($(`<span class="label type-int">${result.type}</span>`));
+          } else if (result.type === "string") {
+            $(el).append($(`<span class="label type-string">${result.type}</span>`));
+          } else {
+            $(el).append($(`<span class="label type">${result.type}</span>`));
+          }
+        }
+        if (result.description && this.ifShowDescription) {
+          $(el).append($(`<span class="label description">${result.description}</span>`));
+        }
       }
     },
 
@@ -204,9 +163,8 @@ export default {
     clean: function () {
       this.ifShowDescription = false;
       this.ifShowType = false;
-      this.descriptionList = [];
+      this.noteList = [];
       $("#response").find(".label.description").remove();
-      this.typeList = [];
       $("#response").find(".label.type").remove();
     },
   }
