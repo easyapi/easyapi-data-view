@@ -114,8 +114,7 @@ export default {
      * 显示注解信息
      */
     showNote: function () {
-      $("#response").find(".label.type").remove();
-      $("#response").find(".label.description").remove();
+      this.cleanNote();
       if (this.type !== "json" && this.type !== "xml") {
         return;
       }
@@ -158,15 +157,24 @@ export default {
     },
 
     /**
-     * 清空代码注释和类型显示
+     * 清空变量及代码注释和类型显示
      */
     clean: function () {
       this.ifShowDescription = false;
       this.ifShowType = false;
       this.noteList = [];
-      $("#response").find(".label.description").remove();
-      $("#response").find(".label.type").remove();
+      this.cleanNote();
     },
+
+    /**
+     * 清空代码注释和类型显示
+     */
+    cleanNote: function () {
+      $("#response").find(".label.type").remove();
+      $("#response").find(".label.type-int").remove();
+      $("#response").find(".label.type-string").remove();
+      $("#response").find(".label.description").remove();
+    }
   }
 };
 </script>
