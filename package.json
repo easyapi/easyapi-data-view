@@ -26,7 +26,7 @@
     "build": "webpack --progress --config webpack.build.js"
   },
   "dependencies": {
-    "highlight.js": "^11.4.0",
+    "highlight.js": "^10.7.0",
     "jquery": "^3.6.0"
   },
   "devDependencies": {
