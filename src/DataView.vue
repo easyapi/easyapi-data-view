@@ -24,7 +24,7 @@ export default {
       ifShowDescription: false,//是否显示数据注释
       ifShowType: false,//是否显示数据类型
       typeList: [],
-      descriptionList: [],
+      descriptionList: []
     };
   },
   created() {
@@ -36,10 +36,10 @@ export default {
   },
   watch: {
     ifShowDescription: function () {
-      this.showDescription();
+      this.showNote();
     },
     ifShowType: function () {
-      this.showType();
+      this.showNote();
     },
     commentData: function () {
       if (this.type === "json" || this.type === "xml") {
@@ -50,65 +50,6 @@ export default {
     },
   },
   methods: {
-    /**
-     *
-     */
-    makeJsonEditor: function (dataArr) {
-      if (!dataArr || dataArr.length === 0) {
-        return [];
-      }
-      const revertWithObj = function (data) {
-        let r = {};
-        for (let i = 0; i < data.length; ++i) {
-          let el = data[i];
-          let key, val;
-          key = el.name;
-          if (el.type === "array") {
-            val = revertWithArray(el.childs);
-          } else if (el.type === "object") {
-            val = revertWithObj(el.childs);
-          } else {
-            val = el.demo;
-          }
-          r[key] = val;
-        }
-        return r;
-      };
-
-      /**
-       *
-       */
-      const revertWithArray = function (data) {
-        let arr = [];
-        for (let i = 0; i < data.length; ++i) {
-          let el = data[i];
-          let r;
-          if (el.type === "array") {
-            r = revertWithArray(el.childs);
-          } else if (el.type === "object") {
-            r = revertWithObj(el.childs);
-          } else {
-            r = el.demo;
-          }
-          arr.push(r);
-        }
-        return arr;
-      };
-
-      /**
-       *
-       */
-      const revertMain = function (data) {
-        if (data[0].type === "array") {
-          return revertWithArray(data[0].childs);
-        } else if (data[0].type === "object") {
-          return revertWithObj(data[0].childs);
-        }
-        return revertWithObj(data);
-      };
-      return revertMain(dataArr);
-    },
-
     /**
      * 返回信息
      */
@@ -126,28 +67,43 @@ export default {
         formatData = this.responseData;
       }
       setTimeout(() => {
-        this.drawResCode(formatData);
+        this.show(formatData);
       }, 200);
     },
 
     /**
-     * 绘制res body
+     * 显示
      */
-    drawResCode: function (content) {
+    show: function (content) {
       let target = document.getElementById("response");
       target.textContent = content;
 
       hljs.highlightElement(target);
-      // this.addCodeLine();
-      if (this.ifShowDescription) {
-        this.showDescription();
-      }
-      if (this.ifShowType) {
-        this.showType();
-      }
-
       this.ifShowDescription = true;
       this.ifShowType = true;
+      this.showNote();
+    },
+
+    /**
+     * 生成数据注释
+     */
+    makeTypeList: function () {
+      this.typeList = [];
+      let that = this;
+      if (!this.commentData || this.commentData.length === 0) {
+        return [];
+      }
+      const makeTypeList = function (data) {
+        for (let i = 0; i < data.length; ++i) {
+          let el = data[i];
+          if (el.type === "array" || el.type === "object") {
+            makeTypeList(el.childs);
+          } else {
+            that.typeList.push(el.type);
+          }
+        }
+      };
+      return makeTypeList(this.commentData);
     },
 
     /**
@@ -189,11 +145,16 @@ export default {
     },
 
     /**
-     * 显示数据类型
+     * 显示注解信息
      */
-    showType: function () {
-      if (!this.ifShowType || (this.type !== "json" && this.type !== "xml")) {
-        $("#response").find(".label.type").remove();
+    showNote: function () {
+      $("#response").find(".label.type").remove();
+      $("#response").find(".label.description").remove();
+      if (this.type !== "json" && this.type !== "xml") {
+        return;
+      }
+      if (!this.ifShowType && !this.ifShowDescription) {
+        //如果描述和类型都不需要显示
         return;
       }
       let children = $("#response").children();
@@ -201,118 +162,40 @@ export default {
         children.each((index, el) => {
           if (el.className !== "hljs-attr") {
             let result = this.descriptionList.find(
-              (x) => children[index].innerText === '"' + x.name + '"'
+              (x) => children[index - 1].innerText === '"' + x.name + '"'
             );
-            if (result && result.type) {
-              $(el).append($(`<span class="label type">${result.type}</span>`));
+            if (result) {
+              if (result.type && this.ifShowType) {
+                $(el).append($(`<span class="label type">${result.type}</span>`));
+              }
+              if (result.description && this.ifShowDescription) {
+                $(el).append($(`<span class="label description">${result.description}</span>`));
+              }
             }
           }
         });
       } else if (this.type === "xml") {
         children.each((index, el) => {
-          let result = this.descriptionList.find(
-            (x) => {
-              el.innerText === "</" + x.name + ">" || (el.innerText === "</" + x.name + ">" + x.description ? x.description : "")
+          let result = this.descriptionList.find((x) => {
+            el.innerText === "</" + x.name + ">" || (el.innerText === "</" + x.name + ">" + x.description ? x.description : "")
+          });
+          // let result = this.descriptionList.find((x) => el.innerText === "</" + x.name + ">" || el.innerText === "</" + x.name + ">" + x.type);
+          if (result) {
+            if (result.type && this.ifShowType) {
+              if (result.type === "int") {
+                $(el).append($(`<span class="label type-int">${result.type}</span>`));
+              } else if (result.type === "string") {
+                $(el).append($(`<span class="label type-string">${result.type}</span>`));
+              } else {
+                $(el).append($(`<span class="label type">${result.type}</span>`));
+              }
             }
-          );
-
-          if (result && result.type) {
-            if (result.type === "int") {
-              $(el).append($(`<span class="label type-int">${result.type}</span>`));
-            } else if (result.type === "string") {
-              $(el).append($(`<span class="label type-string">${result.type}</span>`));
-            } else {
-              $(el).append($(`<span class="label type">${result.type}</span>`));
-            }
-          }
-        });
-      }
-    },
-
-    /**
-     * 显示参数注释
-     */
-    showDescription: function () {
-      if (!this.ifShowDescription || this.descriptionList.length === 0) {
-        $("#response").find(".label.description").remove();
-        return;
-      }
-      let children = $("#response").children();
-      if (this.type === "json") {
-        children.each((index, el) => {
-          if (el.className !== "hljs-attr") {
-            let result = this.descriptionList.find((x) => children[index].innerText === x.name);
-            if (result && result.description) {
+            if (result.description && this.ifShowDescription) {
               $(el).append($(`<span class="label description">${result.description}</span>`));
             }
           }
         });
-      } else if (this.type === "xml") {
-        children.each((index, el) => {
-          let result = this.descriptionList.find((x) => el.innerText === "</" + x.name + ">" || el.innerText === "</" + x.name + ">" + x.type);
-          if (result && result.description) {
-            $(el).append($(`<span class="label description">${result.description}</span>`));
-          }
-        });
       }
-    },
-
-    /**
-     * 生成数据注释
-     */
-    makeTypeList: function () {
-      this.typeList = [];
-      let that = this;
-      if (!this.commentData || this.commentData.length === 0) {
-        return [];
-      }
-      const revertWithObj = function (data) {
-        for (let i = 0; i < data.length; ++i) {
-          let el = data[i];
-          if (el.type === "array") {
-            revertWithArray(el.childs);
-          } else if (el.type === "object") {
-            revertWithObj(el.childs);
-          } else {
-            that.typeList.push(el.type);
-          }
-        }
-      };
-
-      const revertWithArray = function (data) {
-        for (let i = 0; i < data.length; ++i) {
-          let el = data[i];
-          if (el.type === "array") {
-            revertWithArray(el.childs);
-          } else if (el.type === "object") {
-            revertWithObj(el.childs);
-          } else {
-            that.typeList.push(el.type);
-          }
-        }
-      };
-
-      const revertMain = function (data) {
-        if (data[0].type === "array") {
-          return revertWithArray(data[0].childs);
-        } else if (data[0].type === "object") {
-          return revertWithObj(data[0].childs);
-        }
-        return revertWithObj(data);
-      };
-      return revertMain(this.commentData);
-
-      // var setDataType = (oj) => {
-      //   let obj = typeof oj == "string" ? JSON.parse(oj) : oj;
-      //   for (var key in obj) {
-      //     if (obj[key] !== null && typeof obj[key] == "object") {
-      //       setDataType(obj[key]);
-      //     } else {
-      //       this.typeList.push(Object.prototype.toString.call(obj[key]));
-      //     }
-      //   }
-      // };
-      // setDataType(this.resCodeDisplay);
     },
 
     /**
@@ -326,159 +209,7 @@ export default {
       this.typeList = [];
       $("#response").find(".label.type").remove();
     },
-
-    jsonParse: function (jsonStr) {
-      // 解析JSON
-      let parseJson = (json) => {
-        let result = [];
-        let keys = Object.keys(json);
-        keys.forEach((k, index) => {
-          let val = json[k];
-          let parsedVal = val;
-          if (val === null || val === undefined) {
-            val = "";
-          }
-
-          if (this.getType(val) === "object") {
-            parsedVal = parseJson(val);
-            // result.push(fr)
-          } else if (this.getType(val) === "array") {
-            parsedVal = parseArray(val);
-            // result.push(fr)
-          }
-
-          let opt = {
-            name: k,
-            type: this.getType(val),
-            description: "",
-          };
-
-          if (opt.type === "array" || opt.type === "object") {
-            opt.childs = parsedVal;
-            opt.description = null;
-          } else {
-            opt.childs = null;
-            opt.description = parsedVal;
-          }
-
-          result.push(opt);
-        });
-        return result;
-      };
-
-      //  解析ARRAY
-      let parseArray = (arrayObj) => {
-        let result = [];
-        for (let i = 0; i < arrayObj.length; ++i) {
-          let val = arrayObj[i];
-          let parsedVal = val;
-          if (this.getType(val) === "object") {
-            parsedVal = parseJson(val);
-          } else if (this.getType(val) === "array") {
-            parsedVal = parseArray(val);
-          }
-
-          let opt = {
-            name: null,
-            type: this.getType(val),
-            description: "",
-          };
-
-          if (opt.type === "array" || opt.type === "object") {
-            opt.childs = parsedVal;
-            opt.description = null;
-          } else {
-            opt.childs = null;
-            opt.description = parsedVal;
-          }
-
-          result.push(opt);
-        }
-        return result;
-      };
-
-      let parseBody = (json) => {
-        return parseJson(json);
-      };
-
-      return parseBody(jsonStr);
-    },
-
-    getType: function (obj) {
-      switch (Object.prototype.toString.call(obj)) {
-        case "[object Array]":
-          return "array";
-          break;
-        case "[object Object]":
-          return "object";
-          break;
-        default:
-          return String(typeof obj).toLowerCase();
-          break;
-      }
-    },
-
-    makeJson: function (dataArr) {
-      // 翻译JSON
-      let revertWithObj = function (data) {
-        let r = {};
-        for (let i = 0; i < data.length; ++i) {
-          let el = data[i];
-          let key, val;
-          key = el.name;
-          if (el.type === "array") {
-            val = revertWithArray(el.childs);
-          } else if (el.type === "object") {
-            val = revertWithObj(el.childs);
-          } else {
-            val = el.description;
-          }
-          r[key] = val;
-        }
-        return r;
-      };
-
-      // 翻译Array
-      let revertWithArray = function (data) {
-        let arr = [];
-        for (let i = 0; i < data.length; ++i) {
-          let el = data[i];
-          let r;
-          if (el.type === "array") {
-            r = revertWithArray(el.childs);
-          } else if (el.type === "object") {
-            r = revertWithObj(el.childs);
-          } else {
-            r = el.description;
-          }
-
-          arr.push(r);
-        }
-        return arr;
-      };
-
-      let revertMain = function (data) {
-        return revertWithObj(data);
-      };
-
-      return revertMain(dataArr);
-    },
-    //将树状图平铺
-    // treeToTile() {
-    //   this.renderDataRows = [];
-    //   const expanded = (data) => {
-    //     if (data && data.length > 0) {
-    //       data
-    //         .filter((d) => d)
-    //         .forEach((e) => {
-    //           this.renderDataRows.push(e);
-    //           expanded(e["childs"]);
-    //         });
-    //     }
-    //   };
-    //   expanded(this.renderData);
-    // },
-  },
+  }
 };
 </script>
 
