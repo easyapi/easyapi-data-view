@@ -10,6 +10,7 @@
 
 <script>
 import hljs from "highlight.js";
+
 import {formatJson, formatXml} from "./utils/format";
 
 export default {
@@ -125,8 +126,8 @@ export default {
       let children = $("#response").children();
       if (this.type === "json") {
         children.each((index, el) => {
-          if (el.className !== "hljs-attr" && index > 0) {
-            this.append(el, this.noteList.find((x) => children[index - 1].innerText === '"' + x.name + '"'))
+          if (el.className !== "hljs-attr") {
+            this.append(el, this.noteList.find((x) => children[index].innerText === '"' + x.name + '"'))
           }
         });
       } else if (this.type === "xml") {
