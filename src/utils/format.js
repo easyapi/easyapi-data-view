@@ -1,11 +1,11 @@
 /**
- * JSON format print
+ * 格式化JSON源码(对象转换为JSON文本)
+ * @param compress 是否为压缩模式
  */
-let formatJson = function (txt, compress /*是否为压缩模式*/) {
-  /* 格式化JSON源码(对象转换为JSON文本) */
+let formatJson = function (txt, compress) {
   var indentChar = "  ";
   if (/^\s*$/.test(txt)) {
-    console.error("数据为空,无法格式化! ");
+    //数据为空,无法格式化
     return;
   }
   try {

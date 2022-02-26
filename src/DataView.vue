@@ -125,7 +125,7 @@ export default {
       let children = $("#response").children();
       if (this.type === "json") {
         children.each((index, el) => {
-          if (el.className !== "hljs-attr") {
+          if (el.className !== "hljs-attr" && index > 0) {
             this.append(el, this.noteList.find((x) => children[index - 1].innerText === '"' + x.name + '"'))
           }
         });
