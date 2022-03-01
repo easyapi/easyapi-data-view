@@ -34,6 +34,9 @@ export default {
     commentData: function () {
       this.response();
     },
+    responseData: function () {
+      this.response();
+    },
   },
   methods: {
     /**
