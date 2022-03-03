@@ -1,5 +1,5 @@
 <template>
-  <div class="ea-data-view">
+  <div class="ea-data-view" id="test">
     <div class="ea-data-view_control" v-if="type === 'json' || type === 'xml'">
       <el-checkbox v-model="ifShowDescription" @change="showNote()"
         >数据注释</el-checkbox
@@ -26,6 +26,7 @@ export default {
     commentData: [], //注释数据
     responseData: [], //返回内容
     type: "", //类型（json/xml）
+    fontSize: "", //字体大小
   },
   data() {
     return {
@@ -44,7 +45,18 @@ export default {
     responseData: function () {
       this.response();
     },
+    fontSize: function () {
+      let test = document.getElementById("test");
+      test.style.fontSize = this.fontSize;
+    },
   },
+  mounted() {
+    if (this.fontSize == undefined) {
+      let test = document.getElementById("test");
+      test.style.fontSize = '14px'
+    }
+  },
+
   methods: {
     /**
      * 返回信息

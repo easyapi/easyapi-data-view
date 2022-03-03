@@ -3,11 +3,17 @@
     <div class="editor-w clearfix">
       <div class="w-2">
         <div class="editor">
-          <easyapi-data-view :responseData="jsonData" :commentData="jsonCommentData" :type="jsonType"></easyapi-data-view>
+          <easyapi-data-view
+            :responseData="jsonData"
+            :commentData="jsonCommentData"
+            :type="jsonType"
+          ></easyapi-data-view>
         </div>
         <div class="editor">
-<!--          <easyapi-data-view :responseData="xmlData" :commentData="xmlCommentData" :type="xmlType"></easyapi-data-view>-->
+          <!--          <easyapi-data-view :responseData="xmlData" :commentData="xmlCommentData" :type="xmlType"></easyapi-data-view>-->
         </div>
+        <!-- <el-button @click="add">增大</el-button>
+        <el-button @click="reduce">减小</el-button> -->
       </div>
     </div>
   </div>
@@ -18,307 +24,352 @@ export default {
   name: "app",
   data: function () {
     return {
+      fontSize: "12px",
       jsonType: "json",
-      jsonData: "{\"msg\":\"success\",\"code\":200,\"data\":{\"total\":1,\"rows\":[{\"shelfStatus\":null,\"occupationIdsName\":\"导演,导演助理\",\"pageSize\":null,\"title\":\"招募导演和导演助理！！！！_TEST3\",\"ipDirectionName\":\"行业专业技能精英\",\"cityName\":null,\"searchBeginTime\":null,\"ipDirection\":940,\"personalProfile\":\"北京中数聚力网络科技公司（ZSDMG Inc.）公司成立于2009年4月，是中国的一家专注于IP版权交易的创新型互联网文化企业，总部位于中国北京。\\n北京中数聚力公司的主要服务于数字版权资源内容的整合运营及渠道拓展，建立数字版权产品电子商务平台（版权界），为您提供电影、电视剧、电视栏目、动漫品牌、音乐、游戏、电子书、剧本等数字产品的版权授权、版权交易、新媒体营销、网络媒体推广、节目远程推送、新媒体广告等服务。海外推广发行、电视频道栏目运作，电视、网络媒体广告经营、央视文艺活动，影视动画节目创作、培训及资本运营为一体的集团产业化运作。\\n中数聚力与国内外200家以上影视机构、版权代理机构长期合作，涵盖50%以上的电视台同步热播新剧。版权授权合作包括视频网站、电视台、电信运营商、服装厂商、玩具厂商等超过400家合作企业。\\n在新媒体运营市场上，优酷-土豆网、搜狐视频、爱奇艺、腾讯视频、乐视网、PPTV、暴风影音、迅雷看看、风行网、56网、芒果TV等在内的20多家主流视频网站和新媒体播出平台，都与中数聚力公司建立了良好的合作关系。\",\"failReason\":null,\"id\":6,\"userOccIdsName\":null,\"deliveryFlag\":null,\"contactsList\":null,\"address\":null,\"lowAmount\":100,\"updateTime\":\"2021-10-28 14:51:44\",\"requirement\":\"专业导演和专业助手\",\"searchEndTime\":null,\"userName\":\"lizm科技发展有限公司\",\"pageCode\":null,\"vipUserId\":3,\"deliveryNum\":null,\"createTime\":\"2021-10-28 14:51:44\",\"delStatus\":0,\"occupationIds\":\"955,956\",\"endTime\":\"2021-10-10\",\"interestLabelName\":null,\"highAmount\":200,\"status\":2}]}}",
-      jsonCommentData:  [{
-        "childs": [{
-          "childs": null,
-          "demo": "success",
-          "description": "返回说明",
-          "mock": null,
-          "name": "msg",
-          "remark": null,
-          "type": "string"
-        }, {
-          "childs": null,
-          "demo": "200",
-          "description": null,
-          "mock": null,
-          "name": "code",
-          "remark": null,
-          "type": "int"
-        }, {
-          "childs": [{
-            "childs": null,
-            "demo": "1",
-            "description": "总条数",
-            "mock": null,
-            "name": "total",
-            "remark": null,
-            "type": "int"
-          }, {
-            "childs": [{
-              "childs": [{
-                "childs": null,
-                "demo": null,
-                "description": null,
-                "mock": null,
-                "name": "shelfStatus",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": "导演,导演助理",
-                "description": "导演",
-                "mock": null,
-                "name": "occupationIdsName",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": [],
-                "demo": "",
-                "description": null,
-                "mock": null,
-                "name": "pageSize",
-                "remark": null,
-                "type": "int"
-              }, {
-                "childs": null,
-                "demo": "招募导演和导演助理！！！！_TEST3",
-                "description": null,
-                "mock": null,
-                "name": "title",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": "行业专业技能精英",
-                "description": null,
-                "mock": null,
-                "name": "ipDirectionName",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": null,
-                "description": null,
-                "mock": null,
-                "name": "cityName",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": null,
-                "description": null,
-                "mock": null,
-                "name": "searchBeginTime",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": "940",
-                "description": null,
-                "mock": null,
-                "name": "ipDirection",
-                "remark": null,
-                "type": "int"
-              }, {
-                "childs": null,
-                "demo": "北京中数聚力网络科技公司（ZSDMG Inc.）公司成立于2009年4月，是中国的一家专注于IP版权交易的创新型互联网文化企业，总部位于中国北京。\n北京中数聚力公司的主要服务于数字版权资源内容的整合运营及渠道拓展，建立数字版权产品电子商务平台（版权界），为您提供电影、电视剧、电视栏目、动漫品牌、音乐、游戏、电子书、剧本等数字产品的版权授权、版权交易、新媒体营销、网络媒体推广、节目远程推送、新媒体广告等服务。海外推广发行、电视频道栏目运作，电视、网络媒体广告经营、央视文艺活动，影视动画节目创作、培训及资本运营为一体的集团产业化运作。\n中数聚力与国内外200家以上影视机构、版权代理机构长期合作，涵盖50%以上的电视台同步热播新剧。版权授权合作包括视频网站、电视台、电信运营商、服装厂商、玩具厂商等超过400家合作企业。\n在新媒体运营市场上，优酷-土豆网、搜狐视频、爱奇艺、腾讯视频、乐视网、PPTV、暴风影音、迅雷看看、风行网、56网、芒果TV等在内的20多家主流视频网站和新媒体播出平台，都与中数聚力公司建立了良好的合作关系。",
-                "description": null,
-                "mock": null,
-                "name": "personalProfile",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": null,
-                "description": null,
-                "mock": null,
-                "name": "failReason",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": "6",
-                "description": null,
-                "mock": null,
-                "name": "id",
-                "remark": null,
-                "type": "int"
-              }, {
-                "childs": null,
-                "demo": null,
-                "description": null,
-                "mock": null,
-                "name": "userOccIdsName",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": null,
-                "description": null,
-                "mock": null,
-                "name": "deliveryFlag",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": null,
-                "description": null,
-                "mock": null,
-                "name": "contactsList",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": null,
-                "description": null,
-                "mock": null,
-                "name": "address",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": "100",
-                "description": null,
-                "mock": null,
-                "name": "lowAmount",
-                "remark": null,
-                "type": "int"
-              }, {
-                "childs": null,
-                "demo": "2021-10-28 14:51:44",
-                "description": null,
-                "mock": null,
-                "name": "updateTime",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": "专业导演和专业助手",
-                "description": null,
-                "mock": null,
-                "name": "requirement",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": null,
-                "description": null,
-                "mock": null,
-                "name": "searchEndTime",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": "lizm科技发展有限公司",
-                "description": null,
-                "mock": null,
-                "name": "userName",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": null,
-                "description": null,
-                "mock": null,
-                "name": "pageCode",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": "3",
-                "description": null,
-                "mock": null,
-                "name": "vipUserId",
-                "remark": null,
-                "type": "int"
-              }, {
-                "childs": null,
-                "demo": null,
-                "description": null,
-                "mock": null,
-                "name": "deliveryNum",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": "2021-10-28 14:51:44",
-                "description": null,
-                "mock": null,
-                "name": "createTime",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": "0",
-                "description": null,
-                "mock": null,
-                "name": "delStatus",
-                "remark": null,
-                "type": "int"
-              }, {
-                "childs": null,
-                "demo": "955,956",
-                "description": null,
-                "mock": null,
-                "name": "occupationIds",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": "2021-10-10",
-                "description": null,
-                "mock": null,
-                "name": "endTime",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": null,
-                "description": null,
-                "mock": null,
-                "name": "interestLabelName",
-                "remark": null,
-                "type": "string"
-              }, {
-                "childs": null,
-                "demo": "200",
-                "description": null,
-                "mock": null,
-                "name": "highAmount",
-                "remark": null,
-                "type": "int"
-              }, {
-                "childs": null,
-                "demo": "2",
-                "description": null,
-                "mock": null,
-                "name": "status",
-                "remark": null,
-                "type": "int"
-              }],
-              "demo": "",
-              "description": "单条结果",
-              "mock": null,
-              "name": "",
-              "remark": null,
-              "type": "object"
-            }],
-            "demo": "",
-            "description": "结果列表",
-            "mock": null,
-            "name": "rows",
-            "remark": null,
-            "type": "array"
-          }],
-          "demo": "",
-          "description": null,
-          "mock": null,
-          "name": "data",
-          "remark": null,
-          "type": "object"
-        }],
-        "demo": "",
-        "description": null,
-        "mock": null,
-        "name": "根节点",
-        "remark": null,
-        "type": "object"
-      }],
+      jsonData:
+        '{"msg":"success","code":200,"data":{"total":1,"rows":[{"shelfStatus":null,"occupationIdsName":"导演,导演助理","pageSize":null,"title":"招募导演和导演助理！！！！_TEST3","ipDirectionName":"行业专业技能精英","cityName":null,"searchBeginTime":null,"ipDirection":940,"personalProfile":"北京中数聚力网络科技公司（ZSDMG Inc.）公司成立于2009年4月，是中国的一家专注于IP版权交易的创新型互联网文化企业，总部位于中国北京。\\n北京中数聚力公司的主要服务于数字版权资源内容的整合运营及渠道拓展，建立数字版权产品电子商务平台（版权界），为您提供电影、电视剧、电视栏目、动漫品牌、音乐、游戏、电子书、剧本等数字产品的版权授权、版权交易、新媒体营销、网络媒体推广、节目远程推送、新媒体广告等服务。海外推广发行、电视频道栏目运作，电视、网络媒体广告经营、央视文艺活动，影视动画节目创作、培训及资本运营为一体的集团产业化运作。\\n中数聚力与国内外200家以上影视机构、版权代理机构长期合作，涵盖50%以上的电视台同步热播新剧。版权授权合作包括视频网站、电视台、电信运营商、服装厂商、玩具厂商等超过400家合作企业。\\n在新媒体运营市场上，优酷-土豆网、搜狐视频、爱奇艺、腾讯视频、乐视网、PPTV、暴风影音、迅雷看看、风行网、56网、芒果TV等在内的20多家主流视频网站和新媒体播出平台，都与中数聚力公司建立了良好的合作关系。","failReason":null,"id":6,"userOccIdsName":null,"deliveryFlag":null,"contactsList":null,"address":null,"lowAmount":100,"updateTime":"2021-10-28 14:51:44","requirement":"专业导演和专业助手","searchEndTime":null,"userName":"lizm科技发展有限公司","pageCode":null,"vipUserId":3,"deliveryNum":null,"createTime":"2021-10-28 14:51:44","delStatus":0,"occupationIds":"955,956","endTime":"2021-10-10","interestLabelName":null,"highAmount":200,"status":2}]}}',
+      jsonCommentData: [
+        {
+          childs: [
+            {
+              childs: null,
+              demo: "success",
+              description: "返回说明",
+              mock: null,
+              name: "msg",
+              remark: null,
+              type: "string",
+            },
+            {
+              childs: null,
+              demo: "200",
+              description: null,
+              mock: null,
+              name: "code",
+              remark: null,
+              type: "int",
+            },
+            {
+              childs: [
+                {
+                  childs: null,
+                  demo: "1",
+                  description: "总条数",
+                  mock: null,
+                  name: "total",
+                  remark: null,
+                  type: "int",
+                },
+                {
+                  childs: [
+                    {
+                      childs: [
+                        {
+                          childs: null,
+                          demo: null,
+                          description: null,
+                          mock: null,
+                          name: "shelfStatus",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: "导演,导演助理",
+                          description: "导演",
+                          mock: null,
+                          name: "occupationIdsName",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: [],
+                          demo: "",
+                          description: null,
+                          mock: null,
+                          name: "pageSize",
+                          remark: null,
+                          type: "int",
+                        },
+                        {
+                          childs: null,
+                          demo: "招募导演和导演助理！！！！_TEST3",
+                          description: null,
+                          mock: null,
+                          name: "title",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: "行业专业技能精英",
+                          description: null,
+                          mock: null,
+                          name: "ipDirectionName",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: null,
+                          description: null,
+                          mock: null,
+                          name: "cityName",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: null,
+                          description: null,
+                          mock: null,
+                          name: "searchBeginTime",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: "940",
+                          description: null,
+                          mock: null,
+                          name: "ipDirection",
+                          remark: null,
+                          type: "int",
+                        },
+                        {
+                          childs: null,
+                          demo: "北京中数聚力网络科技公司（ZSDMG Inc.）公司成立于2009年4月，是中国的一家专注于IP版权交易的创新型互联网文化企业，总部位于中国北京。\n北京中数聚力公司的主要服务于数字版权资源内容的整合运营及渠道拓展，建立数字版权产品电子商务平台（版权界），为您提供电影、电视剧、电视栏目、动漫品牌、音乐、游戏、电子书、剧本等数字产品的版权授权、版权交易、新媒体营销、网络媒体推广、节目远程推送、新媒体广告等服务。海外推广发行、电视频道栏目运作，电视、网络媒体广告经营、央视文艺活动，影视动画节目创作、培训及资本运营为一体的集团产业化运作。\n中数聚力与国内外200家以上影视机构、版权代理机构长期合作，涵盖50%以上的电视台同步热播新剧。版权授权合作包括视频网站、电视台、电信运营商、服装厂商、玩具厂商等超过400家合作企业。\n在新媒体运营市场上，优酷-土豆网、搜狐视频、爱奇艺、腾讯视频、乐视网、PPTV、暴风影音、迅雷看看、风行网、56网、芒果TV等在内的20多家主流视频网站和新媒体播出平台，都与中数聚力公司建立了良好的合作关系。",
+                          description: null,
+                          mock: null,
+                          name: "personalProfile",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: null,
+                          description: null,
+                          mock: null,
+                          name: "failReason",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: "6",
+                          description: null,
+                          mock: null,
+                          name: "id",
+                          remark: null,
+                          type: "int",
+                        },
+                        {
+                          childs: null,
+                          demo: null,
+                          description: null,
+                          mock: null,
+                          name: "userOccIdsName",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: null,
+                          description: null,
+                          mock: null,
+                          name: "deliveryFlag",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: null,
+                          description: null,
+                          mock: null,
+                          name: "contactsList",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: null,
+                          description: null,
+                          mock: null,
+                          name: "address",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: "100",
+                          description: null,
+                          mock: null,
+                          name: "lowAmount",
+                          remark: null,
+                          type: "int",
+                        },
+                        {
+                          childs: null,
+                          demo: "2021-10-28 14:51:44",
+                          description: null,
+                          mock: null,
+                          name: "updateTime",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: "专业导演和专业助手",
+                          description: null,
+                          mock: null,
+                          name: "requirement",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: null,
+                          description: null,
+                          mock: null,
+                          name: "searchEndTime",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: "lizm科技发展有限公司",
+                          description: null,
+                          mock: null,
+                          name: "userName",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: null,
+                          description: null,
+                          mock: null,
+                          name: "pageCode",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: "3",
+                          description: null,
+                          mock: null,
+                          name: "vipUserId",
+                          remark: null,
+                          type: "int",
+                        },
+                        {
+                          childs: null,
+                          demo: null,
+                          description: null,
+                          mock: null,
+                          name: "deliveryNum",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: "2021-10-28 14:51:44",
+                          description: null,
+                          mock: null,
+                          name: "createTime",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: "0",
+                          description: null,
+                          mock: null,
+                          name: "delStatus",
+                          remark: null,
+                          type: "int",
+                        },
+                        {
+                          childs: null,
+                          demo: "955,956",
+                          description: null,
+                          mock: null,
+                          name: "occupationIds",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: "2021-10-10",
+                          description: null,
+                          mock: null,
+                          name: "endTime",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: null,
+                          description: null,
+                          mock: null,
+                          name: "interestLabelName",
+                          remark: null,
+                          type: "string",
+                        },
+                        {
+                          childs: null,
+                          demo: "200",
+                          description: null,
+                          mock: null,
+                          name: "highAmount",
+                          remark: null,
+                          type: "int",
+                        },
+                        {
+                          childs: null,
+                          demo: "2",
+                          description: null,
+                          mock: null,
+                          name: "status",
+                          remark: null,
+                          type: "int",
+                        },
+                      ],
+                      demo: "",
+                      description: "单条结果",
+                      mock: null,
+                      name: "",
+                      remark: null,
+                      type: "object",
+                    },
+                  ],
+                  demo: "",
+                  description: "结果列表",
+                  mock: null,
+                  name: "rows",
+                  remark: null,
+                  type: "array",
+                },
+              ],
+              demo: "",
+              description: null,
+              mock: null,
+              name: "data",
+              remark: null,
+              type: "object",
+            },
+          ],
+          demo: "",
+          description: null,
+          mock: null,
+          name: "根节点",
+          remark: null,
+          type: "object",
+        },
+      ],
       xmlType: "xml",
-      xmlData: "<person sex=\"female\"><code>Anna</code><latitude>Smith</latitude></person>",
+      xmlData:
+        '<person sex="female"><code>Anna</code><latitude>Smith</latitude></person>',
       xmlCommentData: [
         {
           name: "根节点",
@@ -361,6 +412,14 @@ export default {
       ],
     };
   },
+  // methods:{
+  //   add(){
+  //     this.fontSize = '16px'
+  //   },
+  //   reduce(){
+  //     this.fontSize = '12px'
+  //   }
+  // }
 };
 </script>
 
