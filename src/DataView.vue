@@ -1,8 +1,15 @@
 <template>
   <div class="ea-data-view">
     <div class="ea-data-view_control" v-if="type === 'json' || type === 'xml'">
-      <el-checkbox v-model="ifShowDescription" @change="showNote()">数据注释</el-checkbox>
-      <el-checkbox v-model="ifShowType" @change="showNote()">数据类型</el-checkbox>
+      <el-checkbox v-model="ifShowDescription" @change="showNote()"
+        >数据注释</el-checkbox
+      >
+      <el-checkbox v-model="ifShowType" @change="showNote()"
+        >数据类型</el-checkbox
+      >
+      <el-tooltip class="item" effect="dark" content="复制" placement="top">
+        <el-button icon="el-icon-document-copy" @click="copy"></el-button>
+      </el-tooltip>
     </div>
     <pre class="ea-data-view_viewport" id="response"></pre>
   </div>
@@ -11,20 +18,20 @@
 <script>
 import hljs from "highlight.js";
 
-import {formatJson, formatXml} from "./utils/format";
+import { formatJson, formatXml } from "./utils/format";
 
 export default {
   name: "easyapi-data-view",
   props: {
-    commentData: [],//注释数据
-    responseData: [],//返回内容
-    type: "",//类型（json/xml）
+    commentData: [], //注释数据
+    responseData: [], //返回内容
+    type: "", //类型（json/xml）
   },
   data() {
     return {
-      ifShowDescription: false,//是否显示数据注释
-      ifShowType: false,//是否显示数据类型
-      noteList: []
+      ifShowDescription: false, //是否显示数据注释
+      ifShowType: false, //是否显示数据类型
+      noteList: [],
     };
   },
   created() {
@@ -50,7 +57,7 @@ export default {
       if (!this.responseData) {
         return;
       }
-      let formatData
+      let formatData;
       if (this.type === "json") {
         formatData = formatJson(this.responseData);
       } else if (this.type === "xml") {
@@ -87,7 +94,9 @@ export default {
         oj.forEach((el) => {
           if (el.childs && el.childs.length) {
             //根节点不显示
-            if (!(indexNum === 0 && (el.type === "array" || el.type === "object"))) {
+            if (
+              !(indexNum === 0 && (el.type === "array" || el.type === "object"))
+            ) {
               this.noteList.push({
                 name: el.name,
                 description: el.description,
@@ -130,12 +139,20 @@ export default {
       if (this.type === "json") {
         children.each((index, el) => {
           if (el.className !== "hljs-attr") {
-            this.append(el, this.noteList.find((x) => children[index].innerText === '"' + x.name + '"'))
+            this.append(
+              el,
+              this.noteList.find(
+                (x) => children[index].innerText === '"' + x.name + '"'
+              )
+            );
           }
         });
       } else if (this.type === "xml") {
         children.each((index, el) => {
-          this.append(el, this.noteList.find((x) => el.innerText === "</" + x.name + ">"))
+          this.append(
+            el,
+            this.noteList.find((x) => el.innerText === "</" + x.name + ">")
+          );
         });
       }
     },
@@ -147,15 +164,21 @@ export default {
       if (result) {
         if (result.type && this.ifShowType) {
           if (result.type === "int") {
-            $(el).append($(`<span class="label type-int">${result.type}</span>`));
+            $(el).append(
+              $(`<span class="label type-int">${result.type}</span>`)
+            );
           } else if (result.type === "string") {
-            $(el).append($(`<span class="label type-string">${result.type}</span>`));
+            $(el).append(
+              $(`<span class="label type-string">${result.type}</span>`)
+            );
           } else {
             $(el).append($(`<span class="label type">${result.type}</span>`));
           }
         }
         if (result.description && this.ifShowDescription) {
-          $(el).append($(`<span class="label description">${result.description}</span>`));
+          $(el).append(
+            $(`<span class="label description">${result.description}</span>`)
+          );
         }
       }
     },
@@ -178,8 +201,26 @@ export default {
       $("#response").find(".label.type-int").remove();
       $("#response").find(".label.type-string").remove();
       $("#response").find(".label.description").remove();
-    }
-  }
+    },
+
+    /**
+     * 复制
+     */
+    copy: function () {
+      var text = this.responseData;
+      var input = document.createElement("input");
+      input.setAttribute("value", text);
+      input.setAttribute("id", "copyInput");
+      document.getElementsByTagName("body")[0].appendChild(input);
+      document.getElementById("copyInput").select();
+      document.execCommand("Copy");
+      document.getElementById("copyInput").remove();
+      this.$message({
+        message: "复制成功",
+        type: "success",
+      });
+    },
+  },
 };
 </script>
 
@@ -189,8 +230,17 @@ export default {
   border: 1px solid #e4e4e4;
 
   .ea-data-view_control {
+    position: relative;
     padding: 10px 12px;
     background: #ececec;
+    .el-button {
+      padding: 0;
+      border: 0px solid #dcdfe6;
+      background-color: rgba(0, 0, 0, 0);
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
   }
 
   .ea-data-view_viewport {
@@ -245,7 +295,7 @@ export default {
 
       &.type-int {
         color: #ffffff;
-        background-color: #AF73B3;
+        background-color: #af73b3;
       }
 
       &.type-string {
