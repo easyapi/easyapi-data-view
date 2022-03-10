@@ -1,12 +1,8 @@
 <template>
-  <div class="ea-data-view" id="test">
+  <div class="ea-data-view" id="data-view">
     <div class="ea-data-view_control" v-if="type === 'json' || type === 'xml'">
-      <el-checkbox v-model="ifShowDescription" @change="showNote()"
-        >数据注释</el-checkbox
-      >
-      <el-checkbox v-model="ifShowType" @change="showNote()"
-        >数据类型</el-checkbox
-      >
+      <el-checkbox v-model="ifShowDescription" @change="showNote()">数据注释</el-checkbox>
+      <el-checkbox v-model="ifShowType" @change="showNote()">数据类型</el-checkbox>
       <el-tooltip class="item" effect="dark" content="复制" placement="top">
         <el-button icon="el-icon-document-copy" @click="copy"></el-button>
       </el-tooltip>
@@ -18,16 +14,16 @@
 <script>
 import hljs from "highlight.js";
 
-import { formatJson, formatXml } from "./utils/format";
+import {formatJson, formatXml} from "./utils/format";
 
 export default {
   name: "easyapi-data-view",
-  props: {
-    commentData: [], //注释数据
-    responseData: [], //返回内容
-    type: "", //类型（json/xml）
-    fontSize: "", //字体大小
-  },
+  props: [
+    "commentData", //注释数据
+    "responseData", //返回内容
+    "type", //类型（json/xml）
+    "fontSize"//字体大小
+  ],
   data() {
     return {
       ifShowDescription: false, //是否显示数据注释
@@ -38,6 +34,9 @@ export default {
   created() {
     this.response();
   },
+  mounted() {
+    this.setFontSize();
+  },
   watch: {
     commentData: function () {
       this.response();
@@ -46,18 +45,17 @@ export default {
       this.response();
     },
     fontSize: function () {
-      let test = document.getElementById("test");
-      test.style.fontSize = this.fontSize;
+      this.setFontSize();
     },
   },
-  mounted() {
-    if (this.fontSize == undefined) {
-      let test = document.getElementById("test");
-      test.style.fontSize = '14px'
-    }
-  },
-
   methods: {
+    /**
+     * 设置字体大小
+     */
+    setFontSize() {
+      let dataView = document.getElementById("data-view");
+      dataView.style.fontSize = this.fontSize ? '14px' : this.fontSize;
+    },
     /**
      * 返回信息
      */
@@ -150,21 +148,11 @@ export default {
       let children = $("#response").children();
       if (this.type === "json") {
         children.each((index, el) => {
-          if (el.className !== "hljs-attr") {
-            this.append(
-              el,
-              this.noteList.find(
-                (x) => children[index].innerText === '"' + x.name + '"'
-              )
-            );
-          }
+          this.append(el, this.noteList.find(x => (children[index].innerText === '"' + x.name + '"' || children[index].innerText === x.name)));
         });
       } else if (this.type === "xml") {
         children.each((index, el) => {
-          this.append(
-            el,
-            this.noteList.find((x) => el.innerText === "</" + x.name + ">")
-          );
+          this.append(el, this.noteList.find(x => el.innerText === "</" + x.name + ">"));
         });
       }
     },
@@ -176,21 +164,15 @@ export default {
       if (result) {
         if (result.type && this.ifShowType) {
           if (result.type === "int") {
-            $(el).append(
-              $(`<span class="label type-int">${result.type}</span>`)
-            );
+            $(el).append($(`<span class="label type-int">${result.type}</span>`));
           } else if (result.type === "string") {
-            $(el).append(
-              $(`<span class="label type-string">${result.type}</span>`)
-            );
+            $(el).append($(`<span class="label type-string">${result.type}</span>`));
           } else {
             $(el).append($(`<span class="label type">${result.type}</span>`));
           }
         }
         if (result.description && this.ifShowDescription) {
-          $(el).append(
-            $(`<span class="label description">${result.description}</span>`)
-          );
+          $(el).append($(`<span class="label description">${result.description}</span>`));
         }
       }
     },
@@ -219,18 +201,14 @@ export default {
      * 复制
      */
     copy: function () {
-      var text = this.responseData;
-      var input = document.createElement("input");
-      input.setAttribute("value", text);
+      let input = document.createElement("input");
+      input.setAttribute("value", this.responseData);
       input.setAttribute("id", "copyInput");
       document.getElementsByTagName("body")[0].appendChild(input);
       document.getElementById("copyInput").select();
       document.execCommand("Copy");
       document.getElementById("copyInput").remove();
-      this.$message({
-        message: "复制成功",
-        type: "success",
-      });
+      this.$message.success("复制成功");
     },
   },
 };
@@ -245,9 +223,10 @@ export default {
     position: relative;
     padding: 10px 12px;
     background: #ececec;
+
     .el-button {
       padding: 0;
-      border: 0px solid #dcdfe6;
+      border: 0 solid #dcdfe6;
       background-color: rgba(0, 0, 0, 0);
       position: absolute;
       right: 10px;
@@ -258,6 +237,7 @@ export default {
   .ea-data-view_viewport {
     margin: 0;
     padding: 12px;
+    line-height: 1.4;
   }
 }
 </style>

@@ -1,6 +1,6 @@
 {
   "name": "easyapi-data-view",
-  "version": "1.1.9",
+  "version": "1.1.11",
   "description": "EasyAPI（JSON、XML）注释显示组件",
   "author": "easyapi",
   "keywords": [
@@ -26,7 +26,7 @@
     "build": "webpack --progress --config webpack.build.js"
   },
   "dependencies": {
-    "highlight.js": "^10.7.0",
+    "highlight.js": "^11.4.0",
     "jquery": "^3.6.0"
   },
   "devDependencies": {
@@ -51,7 +51,7 @@
     "@babel/preset-env": "^7.16.11",
     "babel-loader": "^8.2.3",
     "babel-plugin-component": "^1.1.1",
-    "css-loader": "^6.6.0",
+    "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
@@ -60,7 +60,7 @@
     "url-loader": "^4.1.1",
     "vue-loader": "^15.9.8",
     "vue-template-compiler": "^2.6.14",
-    "webpack": "^5.69.1",
+    "webpack": "^5.70.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4"
   },
