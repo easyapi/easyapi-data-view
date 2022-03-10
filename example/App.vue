@@ -24,8 +24,7 @@ export default {
     return {
       fontSize: "14px",
       jsonType: "json",
-      jsonData:
-        '{"code":0,"msg":"success","app_access_token":"a-6U1SbDiM6XIH2DcTCPyeub","expire":7140}',
+      jsonData: '{"code":0,"msg":"success","app_access_token":"a-6U1SbDiM6XIH2DcTCPyeub","expire":7140}',
       jsonCommentData:  [{
         "childs": [{
           "childs": null,
