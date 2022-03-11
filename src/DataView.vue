@@ -278,6 +278,7 @@ export default {
       margin-left: 5px;
       padding: 1px 5px;
       font-size: 0.6em;
+      text-shadow: 0 0 white;
       color: #fff;
       // 类型颜色
       &.type {
