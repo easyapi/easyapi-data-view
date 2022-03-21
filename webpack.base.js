@@ -1,5 +1,4 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const webpack = require('webpack');
 
 const config = {};
 
@@ -38,32 +37,12 @@ config.module = {
       }, {
         loader: "less-loader"
       }]
-    },
-    {
-      test: /\.(png|jpg|gif|webp)$/,
-      loader: 'file-loader',
-      options: {
-        name: '[name].[ext]?[hash]',
-      },
-    },
-    {
-      test: /\.svg/,
-      loader: 'url-loader',
-    }, {
-      test: /\.(woff2?|woff|eot|ttf|otf)(\?.*)?$/,
-      loader: 'url-loader',
-      options: {
-        name: '[name].[ext]?[hash]'
-      }
     }
   ]
 };
 
 config.plugins = [
-  new VueLoaderPlugin(),
-  new webpack.ProvidePlugin({
-    $: "jquery"
-  })
+  new VueLoaderPlugin()
 ];
 
 module.exports = config;

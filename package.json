@@ -26,11 +26,10 @@
     "build": "webpack --progress --config webpack.build.js"
   },
   "dependencies": {
-    "highlight.js": "^11.4.0",
-    "jquery": "^3.6.0"
   },
   "devDependencies": {
     "vue": "^2.6.14",
+    "highlight.js": "^11.5.0",
     "element-ui": "^2.15.6",
     "@babel/core": "^7.17.5",
     "@babel/plugin-proposal-class-properties": "^7.16.7",

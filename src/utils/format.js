@@ -1,28 +1,71 @@
 /**
  * 格式化JSON源码(对象转换为JSON文本)
+ * @param comments 注释型JSON
  * @param compress 是否为压缩模式
+ * @param ifShowDescription 是否显示数据注释
+ * @param ifShowType 是否显示数据类型
  */
-let formatJson = function (txt, compress) {
-  var indentChar = "  ";
-  if (/^\s*$/.test(txt)) {
+let formatJson = function (json, comments, compress, ifShowDescription, ifShowType) {
+  let PADDING = "  ";
+  if (/^\s*$/.test(json)) {
     //数据为空,无法格式化
     return;
   }
   try {
-    var data = eval("(" + txt + ")");
+    var data = eval("(" + json + ")");
   } catch (e) {
     throw ("数据源语法错误,格式化失败! 错误信息: " + e.description, "err");
     return;
   }
-  let draw = [],
-    line = compress ? "" : "\n",
-    nodeCount = 0,
-    maxDepth = 0;
+  let draw = []
+  let line = compress ? "" : "\n"
+  let nodeCount = 0 //字段数量
+  let maxDepth = 0
+  let level = 0; //参数层级
 
-  let notify = function (name, value, isLast, indent /*缩进*/, formObj) {
+  /**
+   * 获取类型和注释
+   *
+   * @param name 参数名
+   * @param level 参数层级
+   */
+  let getComment = function (array, name, currentLevel, level) {
+    if (!ifShowDescription && !ifShowType) {
+      return "";
+    }
+    for (let comment of array) {
+      if (currentLevel === level && name === comment.name) {
+        let result = ""
+        if (comment.type && ifShowType) {
+          result += comment.type + " ";
+        }
+        if (comment.description && ifShowDescription) {
+          result += comment.description;
+        }
+        return result
+      }
+      if (comment.type === "object") {
+        return getComment(comment.childs, name, currentLevel + 1, level);
+      } else if (comment.type === "array") {
+        return getComment(comment.childs, name, currentLevel + 1, level);
+      }
+    }
+  }
+
+  /**
+   *
+   * @param name
+   * @param value
+   * @param isLast
+   * @param indent 缩进
+   * @param formObj
+   */
+  let notify = function (name, value, isLast, indent, formObj) {
     nodeCount++;
     /*节点计数*/
-    for (var i = 0, tab = ""; i < indent; i++) tab += indentChar;
+    for (var i = 0, tab = ""; i < indent; i++) {
+      tab += PADDING;
+    }
     /* 缩进HTML */
     tab = compress ? "" : tab;
     /*压缩模式忽略缩进*/
@@ -34,37 +77,38 @@ let formatJson = function (txt, compress) {
         tab + (formObj ? '"' + name + '":' : "") + "[" + line
       );
       /*缩进'[' 然后换行*/
-      for (var i = 0; i < value.length; i++)
+      for (var i = 0; i < value.length; i++) {
         notify(i, value[i], i === value.length - 1, indent, false);
-      draw.push(
-        tab + "]" + (isLast ? line : "," + line)
-      );
+      }
+      draw.push(tab + "]" + (isLast ? line : "," + line));
       /*缩进']'换行,若非尾元素则添加逗号*/
     } else if (value && typeof value === "object") {
+      level++
       /*处理对象*/
       draw.push(tab + (formObj ? '"' + name + '":' : "") + "{" + line);
       /*缩进'{' 然后换行*/
       let len = 0, i = 0;
-      for (let key in value) len++;
-      for (let key in value) notify(key, value[key], ++i === len, indent, true);
+      for (let key in value) {
+        len++;
+      }
+      for (let key in value) {
+        notify(key, value[key], ++i === len, indent, true);
+      }
       draw.push(tab + "}" + (isLast ? line : "," + line));
       /*缩进'}'换行,若非尾元素则添加逗号*/
     } else {
-      if (typeof value === "string") value = '"' + value + '"';
-      draw.push(
-        tab +
-        (formObj ? '"' + name + '":' : "") +
-        value +
-        (isLast ? "" : ",") +
-        line
-      );
+      if (typeof value === "string") {
+        value = '"' + value + '" ';
+      }
+
+      draw.push(tab + (formObj ? '"' + name + '":' : "") + value + (isLast ? " //" + getComment(comments, name, 1, level) : ", //" + getComment(comments, name, 1, level)) + line);
     }
   };
-  var isLast = true, indent = 0;
+  let isLast = true //是否对象最后一个字段
+  let indent = 0; //缩进
   notify("", data, isLast, indent, false);
   return draw.join("");
 };
-
 
 /**
  * XML格式化
