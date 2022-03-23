@@ -46,6 +46,9 @@ export default {
     fontSize: function () {
       this.setFontSize();
     },
+    ifShowDescription:function(){
+      console.log(this.ifShowDescription)
+    }
   },
   methods: {
     /**
@@ -83,8 +86,6 @@ export default {
       target.textContent = content;
 
       hljs.highlightElement(target);
-      this.ifShowDescription = true;
-      this.ifShowType = true;
     },
 
     /**
