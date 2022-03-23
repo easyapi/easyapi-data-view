@@ -46,9 +46,6 @@ export default {
     fontSize: function () {
       this.setFontSize();
     },
-    ifShowDescription:function(){
-      console.log(this.ifShowDescription)
-    }
   },
   methods: {
     /**
