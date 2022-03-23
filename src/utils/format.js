@@ -27,8 +27,8 @@ let formatJson = function (json, comments, compress, ifShowDescription, ifShowTy
       return []
     }
     return data.reduce((pre, cur) => {
-      const {type, description, childs = []} = cur
-      const name = (parentName ? (parentName + ".") : "") + cur.name
+      cur.name = (parentName ? (parentName + ".") : "") + cur.name
+      const {type, name, description, childs = []} = cur
       return pre.concat([{type, name, description}], convert(childs, cur.name))
     }, [])
   }
@@ -50,12 +50,12 @@ let formatJson = function (json, comments, compress, ifShowDescription, ifShowTy
    *
    * @param name 字段名
    * @param value 字段值
-   * @param parentName 父级字段名
+   * @param prefix 字段前缀
    * @param ifLast 是否当前对象最后一个字段
    * @param indent 缩进
    * @param ifObject 是否是对象
    */
-  let notify = function (name, value, parentName, ifLast, indent, ifObject) {
+  let notify = function (name, value, prefix, ifLast, indent, ifObject) {
 
     nodeCount++;//节点计数
 
@@ -73,7 +73,7 @@ let formatJson = function (json, comments, compress, ifShowDescription, ifShowTy
       draw.push(tab + (ifObject ? '"' + name + '":' : "") + "[" + line);
       //缩进'[' 然后换行
       for (let i = 0; i < value.length; i++) {
-        notify(i, value[i], name, i === value.length - 1, indent, false);
+        notify(i, value[i], (prefix ? prefix + "." : "") + name, i === value.length - 1, indent, false);
       }
       draw.push(tab + "]" + (ifLast ? line : "," + line));
       //缩进']'换行,若非尾元素则添加逗号
@@ -86,8 +86,9 @@ let formatJson = function (json, comments, compress, ifShowDescription, ifShowTy
       for (let key in value) {
         len++;
       }
+      prefix = ifObject ? (prefix ? prefix + "." : prefix) + name : (prefix ? prefix : "")
       for (let key in value) {
-        notify(key, value[key], name ? name : parentName, ++i === len, indent, true);
+        notify(key, value[key], prefix, ++i === len, indent, true);
       }
       draw.push(tab + "}" + (ifLast ? line : "," + line));
       //缩进'}'换行,若非尾元素则添加逗号
@@ -95,7 +96,8 @@ let formatJson = function (json, comments, compress, ifShowDescription, ifShowTy
       if (typeof value === "string") {
         value = '"' + value + '" ';
       }
-      let comment = getComment((parentName ? (parentName + ".") : "") + name)
+      console.log((prefix ? (prefix + ".") : "") + name)
+      let comment = getComment((prefix ? (prefix + ".") : "") + name)
       draw.push(tab + (ifObject ? '"' + name + '":' : "") + value + (ifLast ? " //" + comment : ", //" + comment) + line);
     }
   };
