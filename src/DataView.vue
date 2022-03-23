@@ -64,7 +64,6 @@ export default {
       }
       let formatData;
       if (this.type === "json") {
-        console.log(this.ifShowDescription, this.ifShowType)
         formatData = formatJson(this.responseData, this.commentData, false, this.ifShowDescription, this.ifShowType);
       } else if (this.type === "xml") {
         formatData = formatXml(this.responseData);

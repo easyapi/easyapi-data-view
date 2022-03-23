@@ -1,5 +1,6 @@
 /**
  * 格式化JSON源码(对象转换为JSON文本)
+ * @param json JSON字符串
  * @param comments 注释型JSON
  * @param compress 是否为压缩模式
  * @param ifShowDescription 是否显示数据注释
@@ -11,12 +12,7 @@ let formatJson = function (json, comments, compress, ifShowDescription, ifShowTy
     //数据为空,无法格式化
     return;
   }
-  try {
-    var data = eval("(" + json + ")");
-  } catch (e) {
-    throw ("数据源语法错误,格式化失败! 错误信息: " + e.description, "err");
-    return;
-  }
+  let data = JSON.parse(json);
   let draw = []
   let line = compress ? "" : "\n"
   let nodeCount = 0 //字段数量
@@ -24,89 +20,88 @@ let formatJson = function (json, comments, compress, ifShowDescription, ifShowTy
   let level = 0; //参数层级
 
   /**
-   * 获取类型和注释
-   *
-   * @param name 参数名
-   * @param level 参数层级
+   * 注释JSON转换为扁平数组
    */
-  let getComment = function (array, name, currentLevel, level) {
-    if (!ifShowDescription && !ifShowType) {
-      return "";
+  function convert(data, parentName) {
+    if (!data) {
+      return []
     }
-    for (let comment of array) {
-      if (currentLevel === level && name === comment.name) {
-        let result = ""
-        if (comment.type && ifShowType) {
-          result += comment.type + " ";
-        }
-        if (comment.description && ifShowDescription) {
-          result += comment.description;
-        }
-        return result
-      }
-      if (comment.type === "object") {
-        return getComment(comment.childs, name, currentLevel + 1, level);
-      } else if (comment.type === "array") {
-        return getComment(comment.childs, name, currentLevel + 1, level);
+    return data.reduce((pre, cur) => {
+      const {type, description, childs = []} = cur
+      const name = (parentName ? (parentName + ".") : "") + cur.name
+      return pre.concat([{type, name, description}], convert(childs, cur.name))
+    }, [])
+  }
+
+  comments = convert(comments);
+
+  /**
+   * 获取对应注释类型和注释描述
+   */
+  function getComment(name) {
+    for (let comment of comments) {
+      if (comment.name === name) {
+        return (ifShowType ? (comment.type + " ") : "") + (ifShowDescription ? comment.description : "");
       }
     }
   }
 
   /**
    *
-   * @param name
-   * @param value
-   * @param isLast
+   * @param name 字段名
+   * @param value 字段值
+   * @param parentName 父级字段名
+   * @param ifLast 是否当前对象最后一个字段
    * @param indent 缩进
-   * @param formObj
+   * @param ifObject 是否是对象
    */
-  let notify = function (name, value, isLast, indent, formObj) {
-    nodeCount++;
-    /*节点计数*/
-    for (var i = 0, tab = ""; i < indent; i++) {
+  let notify = function (name, value, parentName, ifLast, indent, ifObject) {
+
+    nodeCount++;//节点计数
+
+    let tab = ""
+    for (let i = 0; i < indent; i++) {
       tab += PADDING;
     }
-    /* 缩进HTML */
+    //缩进HTML
     tab = compress ? "" : tab;
-    /*压缩模式忽略缩进*/
+    //压缩模式忽略缩进
     maxDepth = ++indent;
-    /*缩进递增并记录*/
+    //缩进递增并记录
     if (value && value.constructor === Array) {
-      /*处理数组*/
-      draw.push(
-        tab + (formObj ? '"' + name + '":' : "") + "[" + line
-      );
-      /*缩进'[' 然后换行*/
-      for (var i = 0; i < value.length; i++) {
-        notify(i, value[i], i === value.length - 1, indent, false);
+      //处理数组
+      draw.push(tab + (ifObject ? '"' + name + '":' : "") + "[" + line);
+      //缩进'[' 然后换行
+      for (let i = 0; i < value.length; i++) {
+        notify(i, value[i], name, i === value.length - 1, indent, false);
       }
-      draw.push(tab + "]" + (isLast ? line : "," + line));
-      /*缩进']'换行,若非尾元素则添加逗号*/
+      draw.push(tab + "]" + (ifLast ? line : "," + line));
+      //缩进']'换行,若非尾元素则添加逗号
     } else if (value && typeof value === "object") {
       level++
-      /*处理对象*/
-      draw.push(tab + (formObj ? '"' + name + '":' : "") + "{" + line);
-      /*缩进'{' 然后换行*/
+      //处理对象
+      draw.push(tab + (ifObject ? '"' + name + '":' : "") + "{" + line);
+      //缩进'{' 然后换行
       let len = 0, i = 0;
       for (let key in value) {
         len++;
       }
       for (let key in value) {
-        notify(key, value[key], ++i === len, indent, true);
+        notify(key, value[key], name ? name : parentName, ++i === len, indent, true);
       }
-      draw.push(tab + "}" + (isLast ? line : "," + line));
-      /*缩进'}'换行,若非尾元素则添加逗号*/
+      draw.push(tab + "}" + (ifLast ? line : "," + line));
+      //缩进'}'换行,若非尾元素则添加逗号
     } else {
       if (typeof value === "string") {
         value = '"' + value + '" ';
       }
-
-      draw.push(tab + (formObj ? '"' + name + '":' : "") + value + (isLast ? " //" + getComment(comments, name, 1, level) : ", //" + getComment(comments, name, 1, level)) + line);
+      let comment = getComment((parentName ? (parentName + ".") : "") + name)
+      draw.push(tab + (ifObject ? '"' + name + '":' : "") + value + (ifLast ? " //" + comment : ", //" + comment) + line);
     }
   };
-  let isLast = true //是否对象最后一个字段
+  let ifLast = true //是否对象最后一个字段
   let indent = 0; //缩进
-  notify("", data, isLast, indent, false);
+  notify("", data, "", ifLast, indent, false);
   return draw.join("");
 };
 
