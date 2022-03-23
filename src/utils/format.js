@@ -96,7 +96,6 @@ let formatJson = function (json, comments, compress, ifShowDescription, ifShowTy
       if (typeof value === "string") {
         value = '"' + value + '" ';
       }
-      console.log((prefix ? (prefix + ".") : "") + name)
       let comment = getComment((prefix ? (prefix + ".") : "") + name)
       draw.push(tab + (ifObject ? '"' + name + '":' : "") + value + (ifLast ? " //" + comment : ", //" + comment) + line);
     }
