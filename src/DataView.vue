@@ -1,20 +1,24 @@
 <template>
   <div class="ea-data-view" id="data-view">
     <div class="ea-data-view_control" v-if="type === 'json' || type === 'xml'">
-      <el-checkbox v-model="ifShowDescription" @change="response()">数据注释</el-checkbox>
-      <el-checkbox v-model="ifShowType" @change="response()">数据类型</el-checkbox>
+      <el-checkbox v-model="ifShowDescription" @change="response()"
+        >数据注释</el-checkbox
+      >
+      <el-checkbox v-model="ifShowType" @change="response()"
+        >数据类型</el-checkbox
+      >
       <el-tooltip class="item" effect="dark" content="复制" placement="top">
         <el-button icon="el-icon-document-copy" @click="copy"></el-button>
       </el-tooltip>
     </div>
-    <pre class="ea-data-view_viewport" id="response"></pre>
+    <pre class="ea-data-view_viewport response" :id="id"></pre>
   </div>
 </template>
 
 <script>
 import hljs from "highlight.js";
 
-import {formatJson, formatXml} from "./utils/format";
+import { formatJson, formatXml } from "./utils/format";
 
 export default {
   name: "easyapi-data-view",
@@ -22,12 +26,13 @@ export default {
     "commentData", //注释数据
     "responseData", //返回内容
     "type", //类型（json/xml）
-    "fontSize"//字体大小
+    "fontSize", //字体大小
+    "id",
   ],
   data() {
     return {
       ifShowDescription: true, //是否显示数据注释
-      ifShowType: true //是否显示数据类型
+      ifShowType: true, //是否显示数据类型
     };
   },
   created() {
@@ -53,7 +58,7 @@ export default {
      */
     setFontSize() {
       let dataView = document.getElementById("data-view");
-      dataView.style.fontSize = this.fontSize ? '14px' : this.fontSize;
+      dataView.style.fontSize = this.fontSize ? "14px" : this.fontSize;
     },
     /**
      * 返回信息
@@ -64,7 +69,13 @@ export default {
       }
       let formatData;
       if (this.type === "json") {
-        formatData = formatJson(this.responseData, this.commentData, false, this.ifShowDescription, this.ifShowType);
+        formatData = formatJson(
+          this.responseData,
+          this.commentData,
+          false,
+          this.ifShowDescription,
+          this.ifShowType
+        );
       } else if (this.type === "xml") {
         formatData = formatXml(this.responseData);
       } else {
@@ -79,7 +90,7 @@ export default {
      * 显示
      */
     show: function (content) {
-      let target = document.getElementById("response");
+      let target = document.getElementById(this.id);
       target.textContent = content;
 
       hljs.highlightElement(target);
@@ -155,7 +166,7 @@ export default {
     background-color: #11b5ca !important;
   }
 
-  #response {
+  .response {
     .hljs {
       background: unset !important;
       background-color: unset !important;

@@ -2,14 +2,27 @@
   <div>
     <div class="editor">
       <easyapi-data-view
+        :responseData="xmlData"
+        :commentData="xmlCommentData"
+        :type="xmlType"
+        :size="fontSize"
+        :id="'json'"
+      ></easyapi-data-view>
+    </div>
+    <!-- <easyapi-data-view
+        :responseData="xmlData"
+        :commentData="xmlCommentData"
+        :type="xmlType"
+        :fontSize='fontSize'
+      ></easyapi-data-view> -->
+    <div class="editor">
+      <easyapi-data-view
         :responseData="jsonData"
         :commentData="jsonCommentData"
         :type="jsonType"
-        :fontSize='fontSize'
+        :fontSize="fontSize"
+        :id="'xml'"
       ></easyapi-data-view>
-    </div>
-    <div class="editor">
-      <!--          <easyapi-data-view :responseData="xmlData" :commentData="xmlCommentData" :type="xmlType" :size='fontSize'></easyapi-data-view>-->
     </div>
     <el-button @click="big">大</el-button>
     <el-button @click="middle">中</el-button>
@@ -57,15 +70,17 @@ export default {
               type: "int",
             },
             {
-              childs: [{
-                childs: null,
-                demo: "张三",
-                description: "姓名",
-                mock: null,
-                name: "name",
-                remark: null,
-                type: "int",
-              }],
+              childs: [
+                {
+                  childs: null,
+                  demo: "张三",
+                  description: "姓名",
+                  mock: null,
+                  name: "name",
+                  remark: null,
+                  type: "int",
+                },
+              ],
               demo: null,
               description: null,
               mock: null,
@@ -74,15 +89,17 @@ export default {
               type: "object",
             },
             {
-              childs: [{
-                childs: null,
-                demo: "睡眠",
-                description: "服务名称",
-                mock: null,
-                name: "name",
-                remark: null,
-                type: "int",
-              }],
+              childs: [
+                {
+                  childs: null,
+                  demo: "睡眠",
+                  description: "服务名称",
+                  mock: null,
+                  name: "name",
+                  remark: null,
+                  type: "int",
+                },
+              ],
               demo: null,
               description: null,
               mock: null,
@@ -426,15 +443,15 @@ export default {
   },
   methods: {
     big() {
-      this.fontSize = '16px'
+      this.fontSize = "16px";
     },
     small() {
-      this.fontSize = '12px'
+      this.fontSize = "12px";
     },
     middle() {
-      this.fontSize = '14px'
-    }
-  }
+      this.fontSize = "14px";
+    },
+  },
 };
 </script>
 
