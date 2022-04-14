@@ -1,12 +1,12 @@
 <template>
   <div class="ea-data-view" id="data-view">
     <div class="ea-data-view_control" v-if="type === 'json' || type === 'xml'">
-      <el-checkbox v-model="ifShowDescription" @change="response()"
-        >数据注释</el-checkbox
-      >
-      <el-checkbox v-model="ifShowType" @change="response()"
-        >数据类型</el-checkbox
-      >
+      <el-checkbox v-model="ifShowDescription" @change="response()">
+        数据注释
+      </el-checkbox>
+      <el-checkbox v-model="ifShowType" @change="response()">
+        数据类型
+      </el-checkbox>
       <el-tooltip class="item" effect="dark" content="复制" placement="top">
         <el-button icon="el-icon-document-copy" @click="copy"></el-button>
       </el-tooltip>
@@ -18,7 +18,8 @@
 <script>
 import hljs from "highlight.js";
 
-import { formatJson, formatXml } from "./utils/format";
+import {formatJson} from "./utils/json";
+import {formatXml} from "./utils/xml";
 
 export default {
   name: "easyapi-data-view",

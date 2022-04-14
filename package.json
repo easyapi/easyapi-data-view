@@ -29,11 +29,11 @@
   },
   "devDependencies": {
     "vue": "^2.6.14",
-    "highlight.js": "^11.5.0",
-    "element-ui": "^2.15.6",
-    "@babel/core": "^7.17.5",
+    "highlight.js": "^11.5.1",
+    "element-ui": "^2.15.8",
+    "@babel/core": "^7.17.9",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
-    "@babel/plugin-proposal-decorators": "^7.17.2",
+    "@babel/plugin-proposal-decorators": "^7.17.9",
     "@babel/plugin-proposal-do-expressions": "^7.16.7",
     "@babel/plugin-proposal-export-default-from": "^7.16.7",
     "@babel/plugin-proposal-export-namespace-from": "^7.16.7",
@@ -48,7 +48,7 @@
     "@babel/plugin-proposal-throw-expressions": "^7.16.7",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
-    "babel-loader": "^8.2.3",
+    "babel-loader": "^8.2.4",
     "babel-plugin-component": "^1.1.1",
     "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
@@ -59,9 +59,9 @@
     "url-loader": "^4.1.1",
     "vue-loader": "^15.9.8",
     "vue-template-compiler": "^2.6.14",
-    "webpack": "^5.70.0",
+    "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.7.4"
+    "webpack-dev-server": "^4.8.1"
   },
   "browserslist": [
     "> 1%",
