@@ -1,6 +1,6 @@
 {
   "name": "easyapi-data-view",
-  "version": "1.1.16",
+  "version": "1.1.17",
   "description": "EasyAPI（JSON、XML）注释显示组件",
   "author": "easyapi",
   "keywords": [
@@ -25,8 +25,7 @@
     "example": "rm -rf ./example/dist/*.js && rm -rf ./example/dist/*.html && webpack --progress --config webpack.config.js",
     "build": "webpack --progress --config webpack.build.js"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "vue": "^2.6.14",
     "highlight.js": "^11.5.1",

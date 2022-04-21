@@ -7,8 +7,42 @@
       <el-checkbox v-model="ifShowType" @change="response()">
         数据类型
       </el-checkbox>
+      <el-popover
+        popper-class="popover-save"
+        placement="bottom"
+        width="100"
+        trigger="click"
+      >
+        <div class="popover-list">
+          <div
+            class="popover-item"
+            v-for="(item, index) in responses"
+            :key="index"
+            @click="saveExample(item.name)"
+          >
+            {{ item.name }}
+          </div>
+        </div>
+        <el-tooltip
+          slot="reference"
+          class="item"
+          effect="dark"
+          content="保存"
+          placement="top"
+        >
+          <el-button
+            v-if="ifSave"
+            class="save"
+            icon="el-icon-document-checked"
+          ></el-button>
+        </el-tooltip>
+      </el-popover>
       <el-tooltip class="item" effect="dark" content="复制" placement="top">
-        <el-button icon="el-icon-document-copy" @click="copy"></el-button>
+        <el-button
+          class="copy"
+          icon="el-icon-document-copy"
+          @click="copy"
+        ></el-button>
       </el-tooltip>
     </div>
     <pre class="ea-data-view_viewport response" :id="id"></pre>
@@ -18,16 +52,18 @@
 <script>
 import hljs from "highlight.js";
 
-import {formatJson} from "./utils/json";
-import {formatXml} from "./utils/xml";
+import { formatJson } from "./utils/json";
+import { formatXml } from "./utils/xml";
 
 export default {
   name: "easyapi-data-view",
   props: [
     "commentData", //注释数据
     "responseData", //返回内容
+    "responses", //返回示例
     "type", //类型（json/xml）
     "fontSize", //字体大小
+    "ifSave",
     "id",
   ],
   data() {
@@ -54,6 +90,12 @@ export default {
     },
   },
   methods: {
+    /**
+     * 保存示例
+     */
+    saveExample(name) {
+      this.$emit("updateResponses", name);
+    },
     /**
      * 设置字体大小
      */
@@ -132,13 +174,24 @@ export default {
     padding: 10px 12px;
     background: #ececec;
 
-    .el-button {
+    .save {
+      padding: 0;
+      border: 0 solid #dcdfe6;
+      background-color: rgba(0, 0, 0, 0);
+      position: absolute;
+      right: 40px;
+      top: 10px;
+      font-size: 18px;
+    }
+
+    .copy {
       padding: 0;
       border: 0 solid #dcdfe6;
       background-color: rgba(0, 0, 0, 0);
       position: absolute;
       right: 10px;
       top: 10px;
+      font-size: 18px;
     }
   }
 
@@ -172,6 +225,23 @@ export default {
       background: unset !important;
       background-color: unset !important;
       border: none !important;
+    }
+  }
+}
+
+.popover-save {
+  padding: 5px !important;
+  .popover-item {
+    line-height: 35px;
+    cursor: pointer;
+    padding: 0 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:hover {
+      background: #f4f4f4;
+      border-radius: 5px;
     }
   }
 }
