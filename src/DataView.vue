@@ -135,7 +135,6 @@ export default {
     show: function (content) {
       let target = document.getElementById(this.id);
       target.textContent = content;
-
       hljs.highlightElement(target);
     },
 
@@ -210,17 +209,18 @@ export default {
     margin-bottom: 5px;
   }
 
-  .el-checkbox__input.is-checked + .el-checkbox__label {
-    color: #11b5ca;
-  }
+  // .el-checkbox__input.is-checked + .el-checkbox__label {
+  //   color: #11b5ca;
+  // }
 
-  .el-checkbox__input.is-checked .el-checkbox__inner,
-  .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-    border-color: #11b5ca !important;
-    background-color: #11b5ca !important;
-  }
+  // .el-checkbox__input.is-checked .el-checkbox__inner,
+  // .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  //   border-color: #11b5ca !important;
+  //   background-color: #11b5ca !important;
+  // }
 
   .response {
+    overflow: auto;
     .hljs {
       background: unset !important;
       background-color: unset !important;
