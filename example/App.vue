@@ -20,7 +20,7 @@
       ></easyapi-data-view> -->
     <div class="editor">
       <easyapi-data-view
-        :responseData="jsonData"
+        :responseData="demo"
         :commentData="jsonCommentData"
         :type="jsonType"
         :fontSize="fontSize"
@@ -49,6 +49,7 @@ export default {
           name: "返回示例789787878798",
         },
       ],
+      demo: '{\n  "code": 1,\n  "message": "获取成功",\n  "content": [\n    {\n      "addTime": "2022-04-02 16:17:24",\n      "content": "添加了XX活动",\n      "ip": "123.111.222.255",\n      "logId": 1,\n      "remark": "备注1",\n      "type": "添加活动",\n      "updateTime": "2022-04-02 16:17:26",\n      "user": {\n        "addTime": "2021-10-29 00:00:44",\n        "age": null,\n        "disabilityCertificate": null,\n        "id": 459,\n        "idCard": null,\n        "idType": null,\n        "intro": null,\n        "male": true,\n        "mobile": "13656171020",\n        "nickname": "张磊@EasyAPI",\n        "photo": "https://thirdwx.qlogo.cn/mmopen/vi_32/ajNVdqHZLLBc6LY3bAVloK4XIYFsbdPmLSf7Fw9m8BSt4SAKHa0bAq8W3PmHN5eLX5wP5dXTGVFlAfqYt1KsRg/132",\n        "realName": null,\n        "type": null,\n        "updateTime": "2022-01-06 19:24:31",\n        "username": "13656171020"\n      }\n    }\n  ],\n  "number": 0,\n  "size": 10,\n  "numberOfElements": 1,\n  "totalElements": 1,\n  "totalPages": 1,\n  "first": true,\n  "last": true,\n  "sort": {\n    "empty": false,\n    "sorted": true,\n    "unsorted": false\n  }\n}',
       jsonData:
         '{"msg":"success","code":200,"data":{"total":1,"user":{"name":"张三"},"service":{"name":"睡眠服务"},"rows":[{"total":2,"occupationIdsName":"导演,导演助理","pageSize":null,"title":"招募导演和导演助理！！！！_TEST3","ipDirectionName":"行业专业技能精英","cityName":null,"searchBeginTime":null,"ipDirection":940,"personalProfile":"北京中数聚力网络科技公司（ZSDMG Inc.）公司成立于2009年4月，是中国的一家专注于IP版权交易的创新型互联网文化企业，总部位于中国北京。\\n北京中数聚力公司的主要服务于数字版权资源内容的整合运营及渠道拓展，建立数字版权产品电子商务平台（版权界），为您提供电影、电视剧、电视栏目、动漫品牌、音乐、游戏、电子书、剧本等数字产品的版权授权、版权交易、新媒体营销、网络媒体推广、节目远程推送、新媒体广告等服务。海外推广发行、电视频道栏目运作，电视、网络媒体广告经营、央视文艺活动，影视动画节目创作、培训及资本运营为一体的集团产业化运作。\\n中数聚力与国内外200家以上影视机构、版权代理机构长期合作，涵盖50%以上的电视台同步热播新剧。版权授权合作包括视频网站、电视台、电信运营商、服装厂商、玩具厂商等超过400家合作企业。\\n在新媒体运营市场上，优酷-土豆网、搜狐视频、爱奇艺、腾讯视频、乐视网、PPTV、暴风影音、迅雷看看、风行网、56网、芒果TV等在内的20多家主流视频网站和新媒体播出平台，都与中数聚力公司建立了良好的合作关系。","failReason":null,"id":6,"userOccIdsName":null,"deliveryFlag":null,"contactsList":null,"address":null,"lowAmount":100,"updateTime":"2021-10-28 14:51:44","requirement":"专业导演和专业助手","searchEndTime":null,"userName":"lizm科技发展有限公司","pageCode":null,"vipUserId":3,"deliveryNum":null,"createTime":"2021-10-28 14:51:44","delStatus":0,"occupationIds":"955,956","endTime":"2021-10-10","interestLabelName":null,"highAmount":200,"status":2}]}}',
       jsonCommentData: [

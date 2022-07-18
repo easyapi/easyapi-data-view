@@ -150,14 +150,16 @@ export default {
      * 复制
      */
     copy: function () {
-      let input = document.createElement("input");
-      input.setAttribute("value", this.responseData);
-      input.setAttribute("id", "copyInput");
-      document.getElementsByTagName("body")[0].appendChild(input);
-      document.getElementById("copyInput").select();
-      document.execCommand("Copy");
-      document.getElementById("copyInput").remove();
-      this.$message.success("复制成功");
+      var textareaC = document.createElement("textarea");
+      textareaC.value = this.responseData;
+      textareaC.id = "copyTextArea";
+      document.body.appendChild(textareaC);
+      textareaC.select();
+      document.execCommand("copy");
+      document.body.removeChild(textareaC);
+      if (document.execCommand("copy")) {
+        this.$message.success("复制成功");
+      }
     },
   },
 };
